@@ -1,0 +1,64 @@
+{
+  "data": [
+    {
+      "nomeApp": "Applicazione 1",
+      "numeroApp": "AC4D48AS",
+      "ownerApp": "Owner 1",
+      "statoApp": "Stato App"
+    },
+    {
+      "nomeApp": "Applicazione 2",
+      "numeroApp": "DS8C12SS",
+      "ownerApp": "Owner 2",
+      "statoApp": "Stato App"
+    },
+    {
+      "nomeApp": "Applicazione 3",
+      "numeroApp": "D5AS2X6X",
+      "ownerApp": "Owner 3",
+      "statoApp": "Stato App"
+    },
+    {
+      "nomeApp": "Applicazione 4",
+      "numeroApp": "AX15S1X6",
+      "ownerApp": "Owner 4",
+      "statoApp": "Stato App"
+    },
+    {
+      "nomeApp": "Applicazione 5",
+      "numeroApp": "XS5A1C58",
+      "ownerApp": "Owner 5",
+      "statoApp": "Stato App"
+    },
+    {
+      "nomeApp": "Applicazione 6",
+      "numeroApp": "CSA64S12",
+      "ownerApp": "Owner 6",
+      "statoApp": "Stato App"
+    },
+    {
+      "nomeApp": "Applicazione 7",
+      "numeroApp": "SA45XAS6",
+      "ownerApp": "Owner 7",
+      "statoApp": "Stato App"
+    },
+    {
+      "nomeApp": "Applicazione 8",
+      "numeroApp": "S6X1A8A5",
+      "ownerApp": "Owner 8",
+      "statoApp": "Stato App"
+    },
+    {
+      "nomeApp": "Applicazione 9",
+      "numeroApp": "AC15S5S6S",
+      "ownerApp": "Owner 9",
+      "statoApp": "Stato App"
+    },
+    {
+      "nomeApp": "Applicazione 10",
+      "numeroApp": "S6AX4S952",
+      "ownerApp": "Owner 10",
+      "statoApp": "Stato App"
+    }
+  ]
+}
