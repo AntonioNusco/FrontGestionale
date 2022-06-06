@@ -1,3 +1,4 @@
+import { AppownerService } from './../../service/appownerservice';
 import { ApplicazioneService } from './../../service/applicazioneservice';
 import { Applicazione } from './../../api/applicazione';
 import { AppConfig } from './../../api/appconfig';
@@ -8,6 +9,7 @@ import { FilterService, MenuItem } from 'primeng/api';
 import { Component, OnInit, NgModule } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { AppOwner } from 'src/app/api/appowner';
 
 @Component({
   selector: 'app-dashboard',
@@ -30,16 +32,21 @@ export class DashboardComponent implements OnInit {
   isSubmitted = false;
   editMode = false;
   currentAppId: string;
+  currentOwnerId: number;
   isCaricato = false;
   isApplicazioniCaricate = false;
   caricamentoProgBar: number = 0;
+
+  appOwners: AppOwner[] = [];
+  ownerSingolo: AppOwner;
 
   constructor(
     private updateService: UpdateService,
     private applicazioneService: ApplicazioneService,
     public configService: ConfigService,
     private formBuilder: FormBuilder,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private appownerService: AppownerService
   ) { }
 
   ngOnInit(): void {
@@ -48,6 +55,7 @@ export class DashboardComponent implements OnInit {
     this._getApplicazioni();
     this._initForm();
     this._intervalloLoadingBar();
+    this._getAppOwners();
   }
 
   private _intervalloLoadingBar() {
@@ -67,6 +75,13 @@ export class DashboardComponent implements OnInit {
       this.applicazioni = apps;
       this.appFiltrate = this.applicazioni;
 
+    })
+  }
+
+  private _getAppOwners() {
+    this.appownerService.getOwners().subscribe((owners) => {
+      this.appOwners = owners;
+      console.log(owners);
     })
   }
 
@@ -147,6 +162,7 @@ export class DashboardComponent implements OnInit {
       devMethodology: [''],
       provider: [''],
       exist: [''],
+      owners: ['']
 
     })
   }
@@ -158,7 +174,6 @@ export class DashboardComponent implements OnInit {
   onSubmit() {
     this.isSubmitted = true;
     this.display = true;
-    console.log("onSubmit");
 
     if (this.form.invalid) return;
 
@@ -232,6 +247,7 @@ export class DashboardComponent implements OnInit {
 
         setTimeout(() => this.isCaricato = true, 1000);
       })
+
     }
   }
 

@@ -1,3 +1,4 @@
+import { AppOwner } from './appowner';
 export interface Applicazione {
   idApplicazione?: number;
   nome_App?: string;
@@ -36,4 +37,5 @@ export interface Applicazione {
   devMethodology?: string;
   provider?: string;
   exist?: boolean;
+  owners?: AppOwner;
 }

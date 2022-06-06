@@ -1,12 +1,12 @@
 <div class="layout-topbar">
-  <a class="layout-topbar-logo" routerLink="">
+  <a class="layout-topbar-logo" routerLink="dashboard">
       <!-- <img src="assets/layout/images/{{appMain.config.dark ? 'logo-white' : 'logo-dark'}}.svg" alt="logo"> -->
       <span>GESTIONALE</span>
   </a>
 
-  <a class="p-link layout-menu-button layout-topbar-button" href="#" (click)="appMain.toggleMenu($event)">
+  <button class="p-link layout-menu-button layout-topbar-button" (click)="appMain.toggleMenu($event)">
       <i class="pi pi-bars"></i>
-  </a>
+  </button>
 
   <!-- <a class="p-link layout-topbar-menu-button layout-topbar-button" href="#" (click)="appMain.toggleTopMenu($event)">
       <i class="pi pi-ellipsis-v"></i>

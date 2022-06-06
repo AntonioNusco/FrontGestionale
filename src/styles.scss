@@ -8,9 +8,13 @@
 .spinner {
   display: block;
   position: fixed;
-  z-index: 1031; /* High z-index so it is on top of the page */
+  z-index: 1031;
   top: 50%;
-  right: 50%; /* or: left: 50%; */
-  margin-top: -25px; /* half of the elements height */
-  margin-right: -2px; /* half of the elements widht */
+  right: 50%;
+  margin-top: -25px;
+  margin-right: -2px;
+}
+
+.custom-btn {
+  float: right;
 }

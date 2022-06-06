@@ -44,7 +44,18 @@
   <div class="col-12 xl:col-12">
     <div class="card">
       <div>
-        <h5 class="text-center">Applicazioni</h5>
+
+        <div class="grid">
+          <div class="col-4 xl:col-4"></div>
+
+          <div class="col-4 xl:col-4">
+            <h5 class="text-center">Applicazioni</h5>
+          </div>
+
+          <div class="col-4 xl:col-4">
+            <button pButton pRipple icon="pi pi-plus" type="button" label="Aggiungi App" class="p-button-success custom-btn" *ngIf="isApplicazioniCaricate"></button>
+          </div>
+        </div>
 
         <p-progressBar [value]="caricamentoProgBar" *ngIf="!isApplicazioniCaricate"></p-progressBar>
 
@@ -371,6 +382,24 @@
                 <div class="p-field col">
                   <label for="automationNotes">Automation Notes</label>
                   <textarea type="text" id="automationNotes" pInputText formControlName="automationNotes" [rows]="7" [cols]="30"></textarea>
+                </div>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </p-fieldset>
+
+      <!-- BLOCCO APPOWNER APPLICAZIONE -->
+      <p-fieldset legend="Owner Applicazione" styleClass="mb-4" [toggleable]="true" *ngIf="isCaricato">
+        <div class="grid">
+          <div class="col-12 xl:col-12 lg:col-6">
+            <form [formGroup]="form">
+
+              <div class="p-fluid p-formgroup grid mb-3">
+                <div class="p-field col">
+                  <label for="nome">Nome Owner</label>
+                  <input type="text" id="nome" pInputText formControlName="nome">
                 </div>
               </div>
 

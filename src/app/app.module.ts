@@ -1,3 +1,5 @@
+import { AppownerService } from './service/appownerservice';
+import { Routes, RouterModule } from '@angular/router';
 import { ApplicazioneService } from './service/applicazioneservice';
 import { AppFooterComponent } from './app.footer.component';
 import { UpdateService } from './service/updateservice';
@@ -53,8 +55,8 @@ import {ProgressBarModule} from 'primeng/progressbar';
     ProgressBarModule
   ],
   providers: [
-    {provide: LocationStrategy, useClass: HashLocationStrategy},
-    ConfigService, MenuService, UpdateService, ApplicazioneService
+    // {provide: LocationStrategy, useClass: HashLocationStrategy},
+    ConfigService, MenuService, UpdateService, ApplicazioneService, AppownerService
   ],
   bootstrap: [AppComponent]
 })

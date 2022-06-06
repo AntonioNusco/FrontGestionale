@@ -1,3 +1,4 @@
+import { Event, NavigationStart, Router } from '@angular/router';
 import { Component } from '@angular/core';
 import { PrimeNGConfig } from 'primeng/api';
 
