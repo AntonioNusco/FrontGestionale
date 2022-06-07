@@ -1,0 +1,30 @@
+.login-register {
+
+  height: 100vh;
+
+  &-panel {
+    width: 650px;
+    height: 525px;
+    background-color: var(--surface-a);
+    position: absolute;
+    left: calc(50% - 325px);
+    top: calc(50% - 260px);
+
+    h3 {
+      font-size: 25px;
+    }
+
+    h2 {
+      font-size: 14px;
+      color: #565867;
+    }
+
+    small {
+      font-size: 12.5px;
+    }
+
+    .full-btn {
+      width: 100%;
+    }
+  }
+}

@@ -1,3 +1,4 @@
+import { AuthService } from './service/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { AppMainComponent } from './app.main.component';
 
@@ -21,16 +22,21 @@ export class AppMenuComponent implements OnInit {
 
     model: any[];
 
-    constructor(public appMain: AppMainComponent) { }
+    constructor(public appMain: AppMainComponent, private authService: AuthService) { }
 
     ngOnInit() {
         this.model = [
             {
                 items:[
-                    {label: 'Dashboard',icon: 'pi pi-fw pi-home', routerLink: ['dashboard']}
+                    {label: 'Dashboard',icon: 'pi pi-fw pi-home', routerLink: ['dashboard']},
+                    {label: 'Logout',icon: 'pi pi-fw pi-home'},
                 ]
             }
         ];
+    }
+
+    logoutUser() {
+      this.authService.logout();
     }
 
     onKeydown(event: KeyboardEvent) {
