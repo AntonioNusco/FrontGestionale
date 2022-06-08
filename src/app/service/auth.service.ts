@@ -1,6 +1,5 @@
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Utente } from '../api/utente';
 import { HttpClient } from '@angular/common/http';
@@ -9,9 +8,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root',
 })
 export class AuthService {
-  headers = new HttpHeaders().set('Content-Type', 'application/json');
-  currentUser = {};
-  isLoggedIn = false;
+  isLoggedIn = 'false';
 
   constructor (
     private http: HttpClient,
@@ -23,7 +20,8 @@ export class AuthService {
   }
 
   logout() {
-    // console.log("sono nel logout")
+    this.isLoggedIn = 'false';
+    this.saveToken();
     this.router.navigate(['login']);
   }
 
@@ -32,13 +30,11 @@ export class AuthService {
   }
 
   getToken() {
-    console.log("Sono nel getToken con valore = " + sessionStorage.getItem("Accesso") )
     return sessionStorage.getItem("Accesso");
   }
 
   // get isLoggedIn(): boolean {
   //   const user = JSON.parse(localStorage.getItem('utente')!);
-  //   console.log(user);
   //   return user !== 'null' ? true : false;
   // }
 }

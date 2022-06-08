@@ -27,16 +27,14 @@ export class AppMenuComponent implements OnInit {
     ngOnInit() {
         this.model = [
             {
-                items:[
-                    {label: 'Dashboard',icon: 'pi pi-fw pi-home', routerLink: ['dashboard']},
-                    {label: 'Logout',icon: 'pi pi-fw pi-home'},
+                items: [
+                    {label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['dashboard']},
+                    {label: 'App Eliminate', icon: 'pi pi-fw pi-home', routerLink: ['appeliminate']},
+                    {label: 'Utenti', icon: 'pi pi-fw pi-home', routerLink: ['utenti']},
+                    {label: 'Logout', icon: 'pi pi-fw pi-home', routerLink: ['logout']},
                 ]
             }
         ];
-    }
-
-    logoutUser() {
-      this.authService.logout();
     }
 
     onKeydown(event: KeyboardEvent) {

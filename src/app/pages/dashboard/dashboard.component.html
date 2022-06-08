@@ -1,3 +1,4 @@
+<p-toast></p-toast>
 <div class="grid">
   <div class="col-12 lg:col-6 xl:col-6">
       <div class="card mb-3">
@@ -53,7 +54,7 @@
           </div>
 
           <div class="col-4 xl:col-4">
-            <button pButton pRipple icon="pi pi-plus" type="button" label="Aggiungi App" class="p-button-success custom-btn" *ngIf="isApplicazioniCaricate"></button>
+            <button pButton pRipple icon="pi pi-plus" type="button" label="Aggiungi App" class="p-button-success custom-btn" *ngIf="isApplicazioniCaricate" (click)="addClick()"></button>
           </div>
         </div>
 
@@ -88,6 +89,7 @@
             <td>{{ appFiltrata.afpStatus }}</td>
             <td>
               <button pButton pRipple type="button" icon="pi pi-search" class="p-button p-component p-button-text p-button-icon-only" (click)="onSubmit(); getAppId(appFiltrata.idApplicazione)"></button>
+              <button pButton pRipple type="button" icon="pi pi-trash" class="p-button p-component p-button-text p-button-icon-only ml-4" (click)="deleteApp(appFiltrata.idApplicazione)"></button>
             </td>
           </tr>
         </ng-template>
@@ -120,13 +122,23 @@
   <div class="col-12 xl:col-12 lg:col-12">
     <p-dialog [header]='isCaricato ? "Dettagli Applicazione" : ""' [(visible)]="display" modal="modal" showEffect="fade" [style]="{width: '70vw'}">
 
+      <div class="grid">
+        <div class="col-4 xl:col-4"></div>
+
+        <div class="col-4 xl:col-4">
+          <button pButton pRipple icon="pi pi-plus" type="button" [label]="editMode ? 'Modifica App' : 'Aggiungi App'" class="p-button-success" *ngIf="isCaricato" (click)="addOrModify()" [style]="{width: '100%'}"></button>
+        </div>
+
+        <div class="col-4 xl:col-4"></div>
+      </div>
+
       <p-progressSpinner animationDuration=".5s" *ngIf="!isCaricato" class="spinner" [style]="{width: '50px', height: '50px'}"></p-progressSpinner>
       <!-- BLOCCO ANAGRAFICA APPLICAZIONE -->
 
       <p-fieldset legend="Anagrafica Applicazione" styleClass="mb-4" [toggleable]="true" *ngIf="isCaricato">
         <div class="grid">
           <div class="col-12 xl:col-12 lg:col-6">
-            <form [formGroup]="form">
+            <form [formGroup]="form" enctype="multipart/form-data">
 
               <div class="p-fluid p-formgroup grid mb-3">
                 <div class="p-field col">
@@ -391,7 +403,7 @@
       </p-fieldset>
 
       <!-- BLOCCO APPOWNER APPLICAZIONE -->
-      <p-fieldset legend="Owner Applicazione" styleClass="mb-4" [toggleable]="true" *ngIf="isCaricato">
+      <!-- <p-fieldset legend="Owner Applicazione" styleClass="mb-4" [toggleable]="true" *ngIf="isCaricato">
         <div class="grid">
           <div class="col-12 xl:col-12 lg:col-6">
             <form [formGroup]="form">
@@ -406,13 +418,12 @@
             </form>
           </div>
         </div>
-      </p-fieldset>
+      </p-fieldset> -->
 
       <ng-template pTemplate="footer">
-        <button pButton icon="pi pi-check" (click)="display=false; resetForm()" label="Ok" class="p-button-outlined" *ngIf="isCaricato"></button>
+        <button pButton icon="pi pi-check" (click)="display=false; resetForm()" label="Chiudi" class="p-button-outlined" *ngIf="isCaricato"></button>
       </ng-template>
     </p-dialog>
   </div>
 </div>
-
-
+<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>

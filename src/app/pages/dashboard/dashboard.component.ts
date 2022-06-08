@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { AppownerService } from './../../service/appownerservice';
 import { ApplicazioneService } from './../../service/applicazioneservice';
 import { Applicazione } from './../../api/applicazione';
@@ -5,11 +6,12 @@ import { AppConfig } from './../../api/appconfig';
 import { ConfigService } from './../../service/app.config.service';
 import { UpdateService } from './../../service/updateservice';
 import { Update } from './../../api/update';
-import { FilterService, MenuItem } from 'primeng/api';
+import { FilterService, MenuItem, ConfirmationService, MessageService, ConfirmEventType } from 'primeng/api';
 import { Component, OnInit, NgModule } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AppOwner } from 'src/app/api/appowner';
+import { timer } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -31,6 +33,7 @@ export class DashboardComponent implements OnInit {
   form!: FormGroup;
   isSubmitted = false;
   editMode = false;
+  addMode = false;
   currentAppId: string;
   currentOwnerId: number;
   isCaricato = false;
@@ -46,7 +49,9 @@ export class DashboardComponent implements OnInit {
     public configService: ConfigService,
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
-    private appownerService: AppownerService
+    private appownerService: AppownerService,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService
   ) { }
 
   ngOnInit(): void {
@@ -71,7 +76,6 @@ export class DashboardComponent implements OnInit {
 
   private _getApplicazioni() {
     this.applicazioneService.getApplicazioni().subscribe((apps) => {
-      console.log(apps);
       this.applicazioni = apps;
       this.appFiltrate = this.applicazioni;
 
@@ -81,14 +85,12 @@ export class DashboardComponent implements OnInit {
   private _getAppOwners() {
     this.appownerService.getOwners().subscribe((owners) => {
       this.appOwners = owners;
-      console.log(owners);
     })
   }
 
   filtraggioNomeApp(event) {
     let filtratiPerNome: any[] = [];
     let queryNome = event.query;
-    console.log("Nome: " + queryNome);
 
 
     for (let i = 0; i < this.applicazioni.length; i++) {
@@ -105,7 +107,6 @@ export class DashboardComponent implements OnInit {
   filtraggioApmApp(event) {
     let filtratiPerAPM: any[] = [];
     let queryAPM = event.query;
-    console.log("APM: " + queryAPM);
 
 
     for (let i = 0; i < this.applicazioni.length; i++) {
@@ -126,7 +127,7 @@ export class DashboardComponent implements OnInit {
 
   private _initForm() {
     this.form = this.formBuilder.group({
-      nome_App: [''],
+      nome_App: ['', Validators.required],
       apmCode: [''],
       ownerOnboarding: [''],
       ownerAFP: [''],
@@ -161,7 +162,7 @@ export class DashboardComponent implements OnInit {
       businessCriticality: [''],
       devMethodology: [''],
       provider: [''],
-      exist: [''],
+      exist: [true],
       owners: ['']
 
     })
@@ -175,26 +176,69 @@ export class DashboardComponent implements OnInit {
     this.isSubmitted = true;
     this.display = true;
 
+    // if (this.form.invalid) return;
+
+    // const appFormData = new FormData();
+
+    // Object.keys(this.appForm).map((key) => {
+    //   appFormData.append(key, this.appForm[key].value);
+    // })
+
+  }
+
+  addOrModify() {
     if (this.form.invalid) return;
 
-    const appFormData = new FormData();
+    // const appFormData = new FormData();
+    const appFormData = {};
+
+    // Object.keys(this.appForm).map((key) => {
+    //   appFormData.append(key, this.appForm[key].value);
+    // });
 
     Object.keys(this.appForm).map((key) => {
-      appFormData.append(key, this.appForm[key].value);
+      if (this.appForm[key].value != "") {
+        appFormData[key] = this.appForm[key].value;
+      }
     })
 
+    if(this.editMode) {
+      this._updateApplicazione();
+    } else {
+      this._aggiungiApplicazione(appFormData);
+    }
+  }
+
+  _updateApplicazione() {
+    console.log("Dovrei modificare l'app");
+  }
+
+  _aggiungiApplicazione(appData) {
+    this.applicazioneService.aggiungiApplicazione(appData).subscribe((app: Applicazione) => {
+      timer(2000).toPromise().then(() => {
+        this.display = false;
+        this._getApplicazioni();
+      })
+    });
+  }
+
+  addClick() {
+    this.display = true;
+    this.addMode = true;
+    this.resetForm();
+    this._editMode();
   }
 
   getAppId(idApplicazione: string) {
     this.currentAppId = idApplicazione;
     this.editMode = true;
-    console.log(this.currentAppId);
-    console.log(this.editMode);
 
     this._editMode();
   }
 
   private _editMode() {
+    setTimeout(() => this.isCaricato = true, 1000);
+
     if (this.editMode) {
       this.applicazioneService.getApplicazione(this.currentAppId).subscribe(app => {
         this.appForm['nome_App'].setValue(app.nome_App);
@@ -244,9 +288,9 @@ export class DashboardComponent implements OnInit {
         this.appForm['devMethodology'].setValue(app.devMethodology);
         this.appForm['provider'].setValue(app.provider);
         this.appForm['exist'].setValue(app.exist);
-
-        setTimeout(() => this.isCaricato = true, 1000);
       })
+
+      this._initForm();
 
     }
   }
@@ -254,6 +298,7 @@ export class DashboardComponent implements OnInit {
   resetForm() {
     this.currentAppId = "";
     this.isCaricato = false;
+    this.editMode = false;
 
     this.appForm['nome_App'].setValue("");
     this.appForm['apmCode'].setValue("");
@@ -302,6 +347,44 @@ export class DashboardComponent implements OnInit {
     this.appForm['devMethodology'].setValue("");
     this.appForm['provider'].setValue("");
     this.appForm['exist'].setValue("");
+
+  }
+
+  deleteApp(idApplicazione: string) {
+    this.currentAppId = idApplicazione;
+    this.confirmationService.confirm({
+      message: 'Sicuro di voler procedere?',
+      header: 'Conferma Eliminazione',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.applicazioneService.rimuoviApplicazione(this.currentAppId).subscribe(() => {
+          this._getApplicazioni();
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Successo',
+            detail: 'Prodotto eliminato!'
+          });
+        },
+        () => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Errore',
+            detail: 'Prodotto non eliminato'
+          });
+        });
+      },
+      reject: (type: any) => {
+        switch(type) {
+          case ConfirmEventType.REJECT:
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Rifiutata',
+              detail: 'Hai rifiutato la cancellazione!'
+            });
+          break;
+        }
+      }
+    })
 
   }
 }

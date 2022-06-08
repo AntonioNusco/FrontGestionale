@@ -1,0 +1,55 @@
+<div class="grid">
+  <div class="col-12 xl:col-12">
+    <div class="card">
+      <div>
+
+        <div class="grid">
+          <div class="col-4 xl:col-4"></div>
+
+          <div class="col-4 xl:col-4">
+            <h5 class="text-center">Applicazioni Eliminate</h5>
+          </div>
+
+          <div class="col-4 xl:col-4">
+            <!-- <button pButton pRipple icon="pi pi-plus" type="button" label="Aggiungi App" class="p-button-success custom-btn" *ngIf="isApplicazioniCaricate" (click)="addClick()"></button> -->
+          </div>
+        </div>
+
+        <p-progressBar [value]="caricamentoProgBar" *ngIf="!isApplicazioniCaricate"></p-progressBar>
+
+        <!-- <div class="grid" *ngIf="isApplicazioniCaricate">
+          <div class="col-6 xl:col-6">
+            <p-autoComplete class="p-fluid" placeholder="Filtra per nome" [(ngModel)]="appSelezionate" [suggestions]="appFiltrate" (completeMethod)="filtraggioNomeApp($event)" (onClear)="resetFiltro()" field="nome_App"></p-autoComplete>
+          </div>
+
+          <div class="col-6 xl:col-6">
+            <p-autoComplete class="p-fluid" placeholder="Filtra per apm" [(ngModel)]="appSelezionate" [suggestions]="appFiltrate" (completeMethod)="filtraggioApmApp($event)" (onClear)="resetFiltro()" field="nome_App"></p-autoComplete>
+          </div>
+        </div> -->
+
+      </div>
+      <p-table [value]="applicazioniEliminate" [paginator]="true" [rows]="7" responsiveLayout="scroll" *ngIf="isApplicazioniCaricate">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Nome App</th>
+            <th>APM Code</th>
+            <th>Owner App</th>
+            <th>Stato App</th>
+            <th></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-applicazione>
+          <tr>
+            <td>{{ applicazione.nome_App }}</td>
+            <td>{{ applicazione.apmCode }}</td>
+            <td>{{ applicazione.ownerOnboarding }}</td>
+            <td>{{ applicazione.afpStatus }}</td>
+            <td>
+              <button pButton pRipple icon="pi pi-check" type="button" label="Recupera" class="p-button-success p-button" (click)="recuperaApp(applicazione.idApplicazione)"></button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>

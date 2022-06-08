@@ -1,9 +1,10 @@
-import { AuthGuard } from './service/auth-guard.service';
+import { UtenteService } from './service/utenteservice';
+import { UtentiComponent } from './pages/utenti/utenti.component';
+import { AppEliminateComponent } from './pages/app-eliminate/app-eliminate.component';
+import { LogoutComponent } from './pages/logout/logout.component';
 import { UsersModule } from './login.module';
-import { AuthInterceptor } from './service/authconfig.interceptor';
 import { AuthService } from './service/auth.service';
 import { AppownerService } from './service/appownerservice';
-import { Routes, RouterModule } from '@angular/router';
 import { ApplicazioneService } from './service/applicazioneservice';
 import { AppFooterComponent } from './app.footer.component';
 import { UpdateService } from './service/updateservice';
@@ -18,10 +19,9 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import {TableModule} from 'primeng/table';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import {ButtonModule} from 'primeng/button';
 import {InputTextModule} from 'primeng/inputtext';
 import {AutoCompleteModule} from 'primeng/autocomplete';
@@ -31,8 +31,10 @@ import {DialogModule} from 'primeng/dialog';
 import { FieldsetModule } from 'primeng/fieldset';
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {ProgressBarModule} from 'primeng/progressbar';
-import { LoginComponent } from './pages/login/login.component';
 import {MenubarModule} from 'primeng/menubar';
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import {ConfirmationService, MessageService} from 'primeng/api';
+import {ToastModule} from 'primeng/toast';
 
 @NgModule({
   declarations: [
@@ -42,7 +44,10 @@ import {MenubarModule} from 'primeng/menubar';
     AppMenuComponent,
     AppMenuitemComponent,
     DashboardComponent,
-    AppFooterComponent
+    AppFooterComponent,
+    LogoutComponent,
+    AppEliminateComponent,
+    UtentiComponent
   ],
   imports: [
     BrowserModule,
@@ -60,11 +65,13 @@ import {MenubarModule} from 'primeng/menubar';
     ProgressSpinnerModule,
     ProgressBarModule,
     MenubarModule,
-    UsersModule
+    UsersModule,
+    ConfirmDialogModule,
+    ToastModule
   ],
   providers: [
     // { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-    ConfigService, MenuService, UpdateService, ApplicazioneService, AppownerService, AuthService
+    ConfigService, MenuService, UpdateService, ApplicazioneService, UtenteService, AppownerService, AuthService, ConfirmationService, MessageService
   ],
   bootstrap: [AppComponent]
 })

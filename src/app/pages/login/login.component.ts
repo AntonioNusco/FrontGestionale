@@ -41,9 +41,8 @@ export class LoginComponent implements OnInit {
 
     this.auth.login(this.loginForm['email'].value, this.loginForm['password'].value).subscribe(user => {
       this.authError = false;
-      this.auth.isLoggedIn = true;
+      this.auth.isLoggedIn = 'true';
       this.auth.saveToken();
-      console.log(this.auth.isLoggedIn)
       // this.localstorageService.setToken(user.token);
       this.router.navigate(['dashboard']);
     },
