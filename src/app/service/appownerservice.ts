@@ -9,7 +9,7 @@ export class AppownerService {
 constructor(private http: HttpClient) {}
 
 getOwners(): Observable<AppOwner[]> {
-  return this.http.get<AppOwner[]>('http://localhost:8080/Gestionale/api/appowner/lista');
+  return this.http.get<AppOwner[]>('http://localhost:8080/progettogestionale/appownerrest/getall');
 }
 
 getOwner(ownerId: number): Observable<AppOwner> {

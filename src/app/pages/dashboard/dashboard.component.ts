@@ -105,12 +105,6 @@ export class DashboardComponent implements OnInit {
     })
   }
 
-  // private _getAppOwners() {
-  //   this.appownerService.getOwners().subscribe((owners) => {
-  //     this.appOwners = owners;
-  //   })
-  // }
-
   filtraggioNomeApp(event) {
     let filtratiPerNome: any[] = [];
     let queryNome = event.query;

@@ -1,6 +1,7 @@
 import { AuthService } from './service/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { AppMainComponent } from './app.main.component';
+import { Utente } from './api/utente';
 
 @Component({
     selector: 'app-menu',
@@ -15,12 +16,35 @@ import { AppMainComponent } from './app.main.component';
                 </li>
             </ul>
         </div>
+
+        <div class="container-log">
+            <p-table [value]="utenti" responsiveLayout="scroll">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Utente</th>
+                        <th>App</th>
+                        <th>Category</th>
+                        <th>Quantity</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-utente>
+                    <tr>
+                        <td>{{utente.code}}</td>
+                        <td>{{utente.name}}</td>
+                        <td>{{utente.category}}</td>
+                        <td>{{utente.quantity}}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
     `
 })
 
 export class AppMenuComponent implements OnInit {
 
     model: any[];
+
+    utenti: Utente[];
 
     constructor(public appMain: AppMainComponent, private authService: AuthService) { }
 

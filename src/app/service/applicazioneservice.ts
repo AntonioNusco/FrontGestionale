@@ -47,13 +47,4 @@ recuperaApplicazione(appId: string): Observable<any> {
   return this.http.put<any>(`http://localhost:8080/progettogestionale/applicazionerest/recuperoapp/${appId}`, appId);
 }
 
-// async getApplicazioni() {
-//   try {
-//     const data: any = await this.http.get('http://localhost:8080/Gestionale/api/applicazione/lista').toPromise();
-//     return data;
-//   } catch (error) {
-//     console.error('Errore: ' + error);
-//   }
-// }
-
 }
