@@ -13,7 +13,7 @@ getOwners(): Observable<AppOwner[]> {
 }
 
 getOwner(ownerId: number): Observable<AppOwner> {
-  return this.http.get<AppOwner>(`http://localhost:8080/Gestionale/api/appowner/${ownerId}`);
+  return this.http.get<AppOwner>(`http://localhost:8080/progettogestionale/appownerrest/getbyid/${ownerId}`);
 }
 
 }

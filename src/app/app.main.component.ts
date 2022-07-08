@@ -4,6 +4,8 @@ import { AppComponent } from './app.component';
 import { ConfigService } from './service/app.config.service';
 import { AppConfig } from './api/appconfig';
 import { Subscription } from 'rxjs';
+import { UtenteService } from './service/utenteservice';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-main',
@@ -53,7 +55,7 @@ export class AppMainComponent implements AfterViewInit, OnDestroy, OnInit {
 
     subscription!: Subscription;
 
-    constructor(public renderer: Renderer2, public app: AppComponent, public configService: ConfigService) { }
+    constructor(public renderer: Renderer2, public app: AppComponent, public configService: ConfigService, public utenteService: UtenteService, public router: Router) { }
 
     ngOnInit() {
         this.config = this.configService.config;

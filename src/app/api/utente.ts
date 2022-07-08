@@ -5,4 +5,5 @@ export interface Utente {
   password?: string;
   email?: string;
   ruolo?: boolean;
+  accesso?: boolean;
 }

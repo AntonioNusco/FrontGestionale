@@ -10,9 +10,11 @@ import { Update } from './../../api/update';
 import { FilterService, MenuItem, ConfirmationService, MessageService, ConfirmEventType } from 'primeng/api';
 import { Component, OnInit, NgModule } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AppOwner } from 'src/app/api/appowner';
 import { timer } from 'rxjs';
+import { UtenteService } from 'src/app/service/utenteservice';
+import { Utente } from 'src/app/api/utente';
 
 @Component({
   selector: 'app-dashboard',
@@ -54,6 +56,8 @@ export class DashboardComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private rescanService: RescanService,
+    private utenteService: UtenteService,
+    public router: Router
   ) { }
 
   ngOnInit(): void {
@@ -62,7 +66,24 @@ export class DashboardComponent implements OnInit {
     this._getApplicazioni();
     this._initForm();
     this._intervalloLoadingBar();
-    this._getAppOwners();
+    this._controlloUtente();
+  }
+
+  _controlloUtente() {
+    if (sessionStorage.length > 0) {
+      let idUtente = sessionStorage.getItem("Utente");
+      let isLoggato: boolean;
+
+      this.utenteService.getUtente(idUtente).subscribe((utente: Utente) => {
+        isLoggato = utente.accesso;
+      })
+
+    } else if (sessionStorage.length == 0) {
+
+      window.alert('Accesso negato, è richiesto l\'accesso!');
+      this.router.navigate(['login']);
+    
+    }
   }
 
   private _intervalloLoadingBar() {
@@ -84,11 +105,11 @@ export class DashboardComponent implements OnInit {
     })
   }
 
-  private _getAppOwners() {
-    this.appownerService.getOwners().subscribe((owners) => {
-      this.appOwners = owners;
-    })
-  }
+  // private _getAppOwners() {
+  //   this.appownerService.getOwners().subscribe((owners) => {
+  //     this.appOwners = owners;
+  //   })
+  // }
 
   filtraggioNomeApp(event) {
     let filtratiPerNome: any[] = [];
@@ -320,12 +341,14 @@ export class DashboardComponent implements OnInit {
         // this.appForm['exist'].setValue(app.exist);
 
         // DATI OWNER APPLICAZIONE
-        // let ownerApp = app.owners[0];
-        // this.appForm['nome'].setValue(ownerApp.nome);
-        // this.appForm['cognome'].setValue(ownerApp.cognome);
-        // this.appForm['email'].setValue(ownerApp.email);
-        // this.appForm['cell'].setValue(ownerApp.cell);
-        // this.appForm['dsUnit'].setValue(ownerApp.dsUnit);
+        let ownerApp = app.idOwners;
+        this.appownerService.getOwner(ownerApp).subscribe(appOwner => {
+          this.appForm['nome'].setValue(appOwner.nome);
+          this.appForm['cognome'].setValue(appOwner.cognome);
+          this.appForm['email'].setValue(appOwner.email);
+          this.appForm['cell'].setValue(appOwner.cell);
+          this.appForm['dsUnit'].setValue(appOwner.dsUnit);
+        })
 
         // DATI RESCAN APPLICAZIONE
         let rescanApp = app.idRescans;

@@ -19,7 +19,7 @@ export class UtenteService {
   }
 
   getUtente(userId: string): Observable<Utente> {
-    return this.http.get<Utente>(`http://localhost:8080/Gestionale/api/utente/${userId}`);
+    return this.http.get<Utente>(`http://localhost:8080/progettogestionale/utenterest/getutentebyid/${userId}`);
   }
 
   updateRuolo(userId: string): Observable<Utente> {

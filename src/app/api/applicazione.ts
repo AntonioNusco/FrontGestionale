@@ -39,6 +39,6 @@ export interface Applicazione {
   devMethodology?: string;
   provider?: string;
   exist?: boolean;
-  owners?: AppOwner;
+  idOwners?: number;
   idRescans?: number;
 }
