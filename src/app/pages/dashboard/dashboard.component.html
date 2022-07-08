@@ -239,10 +239,10 @@
                   <label for="provider">Provider</label>
                   <input type="text" id="provider" pInputText formControlName="provider">
                 </div>
-                <div class="p-field col">
+                <!-- <div class="p-field col">
                   <label for="exist">Exist boolean</label>
                   <input type="text" id="exist" pInputText formControlName="exist">
-                </div>
+                </div> -->
               </div>
             </form>
           </div>
@@ -403,7 +403,7 @@
       </p-fieldset>
 
       <!-- BLOCCO APPOWNER APPLICAZIONE -->
-      <!-- <p-fieldset legend="Owner Applicazione" styleClass="mb-4" [toggleable]="true" *ngIf="isCaricato">
+      <p-fieldset legend="Owner Applicazione" styleClass="mb-4" [toggleable]="true" *ngIf="isCaricato">
         <div class="grid">
           <div class="col-12 xl:col-12 lg:col-6">
             <form [formGroup]="form">
@@ -413,12 +413,107 @@
                   <label for="nome">Nome Owner</label>
                   <input type="text" id="nome" pInputText formControlName="nome">
                 </div>
+
+                <div class="p-field col">
+                  <label for="cognome">Cognome Owner</label>
+                  <input type="text" id="cognome" pInputText formControlName="cognome">
+                </div>
+              </div>
+
+              <div class="p-fluid p-formgroup grid mb-3">
+                <div class="p-field col">
+                  <label for="email">Email Owner</label>
+                  <input type="text" id="email" pInputText formControlName="email">
+                </div>
+
+                <div class="p-field col">
+                  <label for="cell">Cellulare Owner</label>
+                  <input type="text" id="cell" pInputText formControlName="cell">
+                </div>
+              </div>
+
+              <div class="p-fluid p-formgroup grid mb-3">
+                <div class="p-field col">
+                  <label for="dsUnit">DS Unite Owner</label>
+                  <input type="text" id="dsUnit" pInputText formControlName="dsUnit">
+                </div>
               </div>
 
             </form>
           </div>
         </div>
-      </p-fieldset> -->
+      </p-fieldset>
+
+      <!-- BLOCCO RESCAN APPLICAZIONE -->
+      <p-fieldset legend="Rescam Applicazione" styleClass="mb-4" [toggleable]="true" *ngIf="isCaricato">
+        <div class="grid">
+          <div class="col-12 xl:col-12 lg:col-6">
+            <form [formGroup]="form">
+
+              <div class="p-fluid p-formgroup grid mb-3">
+                <div class="p-field col">
+                  <label for="nRescan">N° Rescan</label>
+                  <input type="text" id="nRescan" pInputText formControlName="nRescan">
+                </div>
+
+                <div class="p-field col">
+                  <label for="newOb">New Ob</label>
+                  <input type="text" id="newOb" pInputText formControlName="newOb">
+                </div>
+              </div>
+
+              <div class="p-fluid p-formgroup grid mb-3">
+                <div class="p-field col">
+                  <label for="py">PY</label>
+                  <input type="text" id="py" pInputText formControlName="py">
+                </div>
+
+                <div class="p-field col">
+                  <label for="ytd">YTD</label>
+                  <input type="text" id="ytd" pInputText formControlName="ytd">
+                </div>
+              </div>
+
+              <div class="p-fluid p-formgroup grid mb-3">
+                <div class="p-field col">
+                  <label for="afpe">AFPE</label>
+                  <input type="text" id="afpe" pInputText formControlName="afpe">
+                </div>
+
+                <div class="p-field col">
+                  <label for="yoyRolling">YOY Rolling</label>
+                  <input type="text" id="yoyRolling" pInputText formControlName="yoyRolling">
+                </div>
+              </div>
+
+              <div class="p-fluid p-formgroup grid mb-3">
+                <div class="p-field col">
+                  <label for="last_Rescan">Ultimo Rescan</label>
+                  <input type="text" id="last_Rescan" pInputText formControlName="last_Rescan">
+                </div>
+
+                <div class="p-field col">
+                  <label for="onGoing">OnGoing true/false</label>
+                  <input type="text" id="onGoing" pInputText formControlName="onGoing">
+                </div>
+              </div>
+
+              <div class="p-fluid p-formgroup grid mb-3">
+                <div class="p-field col">
+                  <label for="archive">Archivio</label>
+                  <input type="text" id="archive" pInputText formControlName="archive">
+                </div>
+
+                <div class="p-field col">
+                  <label for="rkd">RKD</label>
+                  <input type="text" id="rkd" pInputText formControlName="rkd">
+                </div>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </p-fieldset>
 
       <ng-template pTemplate="footer">
         <button pButton icon="pi pi-check" (click)="display=false; resetForm()" label="Chiudi" class="p-button-outlined" *ngIf="isCaricato"></button>

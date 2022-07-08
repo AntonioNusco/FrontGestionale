@@ -60,7 +60,7 @@ export class UtentiComponent implements OnInit {
       cognome: [''],
       email: ['', Validators.required],
       password: ['', Validators.required],
-      ruolo: [false],
+      ruolo: [''],
     })
   }
 

@@ -1,3 +1,4 @@
+import { RescanService } from './service/rescanservice';
 import { UtenteService } from './service/utenteservice';
 import { UtentiComponent } from './pages/utenti/utenti.component';
 import { AppEliminateComponent } from './pages/app-eliminate/app-eliminate.component';
@@ -71,7 +72,7 @@ import {ToastModule} from 'primeng/toast';
   ],
   providers: [
     // { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-    ConfigService, MenuService, UpdateService, ApplicazioneService, UtenteService, AppownerService, AuthService, ConfirmationService, MessageService
+    ConfigService, MenuService, UpdateService, ApplicazioneService, UtenteService, AppownerService, AuthService, ConfirmationService, MessageService, RescanService
   ],
   bootstrap: [AppComponent]
 })

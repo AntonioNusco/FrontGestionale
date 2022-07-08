@@ -1,4 +1,6 @@
+import { Rescan } from './rescan';
 import { AppOwner } from './appowner';
+import { Time } from '@angular/common';
 export interface Applicazione {
   idApplicazione?: number;
   nome_App?: string;
@@ -15,7 +17,7 @@ export interface Applicazione {
   fase?: string;
   afpStatus?: string;
   pubblicatoDashboard?: string;
-  noteAppOwner?: number;
+  noteAppOwner?: string;
   avgAnalysisTime?: number;
   jiraautomationActivation?: string;
   repoAvailability?: string;
@@ -25,7 +27,7 @@ export interface Applicazione {
   greenItIndex?: string;
   insertedInCastProgram?: string;
   stakeholderEngagement?: string;
-  launchingMeetingDataGatheringStarting?: number;
+  launchingMeetingDataGatheringStarting?: Time;
   stakeholderBrief?: string;
   onBoardingKitDelivery?: string;
   onboardingKitClosing?: string
@@ -38,4 +40,5 @@ export interface Applicazione {
   provider?: string;
   exist?: boolean;
   owners?: AppOwner;
+  idRescans?: number;
 }

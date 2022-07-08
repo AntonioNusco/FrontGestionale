@@ -16,28 +16,35 @@ export class ApplicazioneService {
 constructor(private http: HttpClient) {}
 
 getApplicazioni(): Observable<Applicazione[]> {
-  return this.http.get<Applicazione[]>('http://localhost:8080/Gestionale/api/applicazione/lista');
+  // return this.http.get<Applicazione[]>('http://localhost:8080/Gestionale/api/applicazione/lista');
+  return this.http.get<Applicazione[]>('http://localhost:8080/progettogestionale/applicazionerest/getallapp');
 }
 
 getApplicazioniEliminate(): Observable<Applicazione[]> {
-  return this.http.get<Applicazione[]>('http://localhost:8080/Gestionale/api/applicazione/deletedapp');
+  return this.http.get<Applicazione[]>('http://localhost:8080/progettogestionale/applicazionerest/getappeliminate');
 }
 
 getApplicazione(appId: string): Observable<Applicazione> {
-  return this.http.get<Applicazione>(`http://localhost:8080/Gestionale/api/applicazione/${appId}`);
+  // return this.http.get<Applicazione>(`http://localhost:8080/Gestionale/api/applicazione/${appId}`);
+  return this.http.get<Applicazione>(`http://localhost:8080/progettogestionale/applicazionerest/getbyid/${appId}`);
 }
 
 aggiungiApplicazione(appForm): Observable<Applicazione> {
   // console.log(JSON.parse(JSON.stringify(appForm)))
-  return this.http.post<Applicazione>(`http://localhost:8080/Gestionale/api/applicazione/aggiunta`, appForm , this.headers);
+  return this.http.post<Applicazione>(`http://localhost:8080/progettogestionale/applicazionerest/save`, appForm , this.headers);
+}
+
+modificaApplicazione(appForm): Observable<Applicazione> {
+  // console.log(JSON.parse(JSON.stringify(appForm)))
+  return this.http.post<Applicazione>(`http://localhost:8080/progettogestionale/applicazionerest/save`, appForm , this.headers);
 }
 
 rimuoviApplicazione(appId: string): Observable<any> {
-  return this.http.put<any>(`http://localhost:8080/Gestionale/api/applicazione/delete/${appId}`, appId);
+  return this.http.put<any>(`http://localhost:8080/progettogestionale/applicazionerest/logicdelete/${appId}`, appId);
 }
 
 recuperaApplicazione(appId: string): Observable<any> {
-  return this.http.put<any>(`http://localhost:8080/Gestionale/api/applicazione/recovery/${appId}`, appId);
+  return this.http.put<any>(`http://localhost:8080/progettogestionale/applicazionerest/recuperoapp/${appId}`, appId);
 }
 
 // async getApplicazioni() {

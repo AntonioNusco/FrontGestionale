@@ -1,3 +1,4 @@
+import { RescanService } from './../../service/rescanservice';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AppownerService } from './../../service/appownerservice';
 import { ApplicazioneService } from './../../service/applicazioneservice';
@@ -51,7 +52,8 @@ export class DashboardComponent implements OnInit {
     private route: ActivatedRoute,
     private appownerService: AppownerService,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private rescanService: RescanService,
   ) { }
 
   ngOnInit(): void {
@@ -65,7 +67,7 @@ export class DashboardComponent implements OnInit {
 
   private _intervalloLoadingBar() {
     let intervallo = setInterval(() => {
-      this.caricamentoProgBar = this.caricamentoProgBar + Math.floor(Math.random() * 50) + 1;
+      this.caricamentoProgBar = this.caricamentoProgBar + Math.floor(Math.random() * 65) + 1;
       if (this.caricamentoProgBar >= 100) {
         this.caricamentoProgBar = 100;
         this.isApplicazioniCaricate = true;
@@ -127,6 +129,7 @@ export class DashboardComponent implements OnInit {
 
   private _initForm() {
     this.form = this.formBuilder.group({
+      idApplicazione: [''],
       nome_App: ['', Validators.required],
       apmCode: [''],
       ownerOnboarding: [''],
@@ -157,14 +160,31 @@ export class DashboardComponent implements OnInit {
       onboardingKitClosing: [''],
       sourceCodeFinalDelivery: [''],
       primaRestitution: [''],
-      done: [false],
+      done: [''],
       linkConfluence: [''],
       businessCriticality: [''],
       devMethodology: [''],
       provider: [''],
-      exist: [true],
-      owners: ['']
+      // exist: [true],
 
+      // DATI APPOWNER
+      nome: [''],
+      cognome: [''],
+      email: [''],
+      cell: [''],
+      dsUnit: [''],
+
+      // DATI RESCAN
+      nRescan: [0],
+      newOb: [0],
+      py: [0],
+      ytd: [0],
+      afpe: [''],
+      yoyRolling: [''],
+      last_Rescan: [''],
+      onGoing: [''],
+      archive: [''],
+      rkd: [''],
     })
   }
 
@@ -203,14 +223,20 @@ export class DashboardComponent implements OnInit {
     })
 
     if(this.editMode) {
-      this._updateApplicazione();
+      this._updateApplicazione(appFormData);
+      console.log("Dovrei modificare l'applicazione")
     } else {
       this._aggiungiApplicazione(appFormData);
     }
   }
 
-  _updateApplicazione() {
-    console.log("Dovrei modificare l'app");
+  _updateApplicazione(appData) {
+    this.applicazioneService.modificaApplicazione(appData).subscribe((app: Applicazione) => {
+      timer(2000).toPromise().then(() => {
+        this.display = false;
+        this._getApplicazioni();
+      })
+    });
   }
 
   _aggiungiApplicazione(appData) {
@@ -232,6 +258,7 @@ export class DashboardComponent implements OnInit {
   getAppId(idApplicazione: string) {
     this.currentAppId = idApplicazione;
     this.editMode = true;
+    console.log(this.currentAppId);
 
     this._editMode();
   }
@@ -241,6 +268,9 @@ export class DashboardComponent implements OnInit {
 
     if (this.editMode) {
       this.applicazioneService.getApplicazione(this.currentAppId).subscribe(app => {
+        console.log(app);
+
+        this.appForm['idApplicazione'].setValue(app.idApplicazione);
         this.appForm['nome_App'].setValue(app.nome_App);
         this.appForm['apmCode'].setValue(app.apmCode);
         this.appForm['ownerOnboarding'].setValue(app.ownerOnboarding);
@@ -287,7 +317,33 @@ export class DashboardComponent implements OnInit {
 
         this.appForm['devMethodology'].setValue(app.devMethodology);
         this.appForm['provider'].setValue(app.provider);
-        this.appForm['exist'].setValue(app.exist);
+        // this.appForm['exist'].setValue(app.exist);
+
+        // DATI OWNER APPLICAZIONE
+        // let ownerApp = app.owners[0];
+        // this.appForm['nome'].setValue(ownerApp.nome);
+        // this.appForm['cognome'].setValue(ownerApp.cognome);
+        // this.appForm['email'].setValue(ownerApp.email);
+        // this.appForm['cell'].setValue(ownerApp.cell);
+        // this.appForm['dsUnit'].setValue(ownerApp.dsUnit);
+
+        // DATI RESCAN APPLICAZIONE
+        let rescanApp = app.idRescans;
+        this.rescanService.getRescans(rescanApp).subscribe(rescan => {
+          console.log(rescan);
+          this.appForm['nRescan'].setValue(rescan.nRescan);
+          this.appForm['newOb'].setValue(rescan.newOb);
+          this.appForm['py'].setValue(rescan.py);
+          this.appForm['ytd'].setValue(rescan.ytd);
+          this.appForm['afpe'].setValue(rescan.afpe);
+          this.appForm['yoyRolling'].setValue(rescan.yoyRolling);
+          this.appForm['last_Rescan'].setValue(rescan.last_Rescan);
+          this.appForm['onGoing'].setValue(rescan.onGoing);
+          this.appForm['archive'].setValue(rescan.archive);
+          // this.appForm['exist'].setValue(rescanApp.exist);
+          this.appForm['rkd'].setValue(rescan.rkd);
+        })
+
       })
 
       this._initForm();
@@ -300,6 +356,7 @@ export class DashboardComponent implements OnInit {
     this.isCaricato = false;
     this.editMode = false;
 
+    this.appForm['idApplicazione'].setValue("");
     this.appForm['nome_App'].setValue("");
     this.appForm['apmCode'].setValue("");
     this.appForm['ownerOnboarding'].setValue("");
@@ -346,7 +403,13 @@ export class DashboardComponent implements OnInit {
 
     this.appForm['devMethodology'].setValue("");
     this.appForm['provider'].setValue("");
-    this.appForm['exist'].setValue("");
+    // this.appForm['exist'].setValue("");
+
+    this.appForm['nome'].setValue("");
+    this.appForm['cognome'].setValue("");
+    this.appForm['email'].setValue("");
+    this.appForm['cell'].setValue("");
+    this.appForm['dsUnit'].setValue("");
 
   }
 
