@@ -36,6 +36,7 @@ import {MenubarModule} from 'primeng/menubar';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {ConfirmationService, MessageService} from 'primeng/api';
 import {ToastModule} from 'primeng/toast';
+import { LogFileAppService } from './service/logappservice';
 
 @NgModule({
   declarations: [
@@ -72,7 +73,7 @@ import {ToastModule} from 'primeng/toast';
   ],
   providers: [
     // { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-    ConfigService, MenuService, UpdateService, ApplicazioneService, UtenteService, AppownerService, AuthService, ConfirmationService, MessageService, RescanService
+    ConfigService, MenuService, UpdateService, ApplicazioneService, UtenteService, AppownerService, AuthService, ConfirmationService, MessageService, RescanService, LogFileAppService
   ],
   bootstrap: [AppComponent]
 })

@@ -1,7 +1,10 @@
-import { AuthService } from './service/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { AppMainComponent } from './app.main.component';
 import { Utente } from './api/utente';
+import { LogFileApp } from './api/logfileapp';
+import { LogFileAppService } from './service/logappservice';
+import { ApplicazioneService } from './service/applicazioneservice';
+import { UtenteService } from './service/utenteservice';
 
 @Component({
     selector: 'app-menu',
@@ -17,22 +20,20 @@ import { Utente } from './api/utente';
             </ul>
         </div>
 
-        <div class="container-log">
-            <p-table [value]="utenti" responsiveLayout="scroll">
+        <div class="container-log" style="margin-top: 2.5rem;">
+            <p-table [value]="logsApp" [scrollable]="true" scrollHeight="500px" responsiveLayout="scroll">
                 <ng-template pTemplate="header">
                     <tr>
+                        <th>Data</th>
                         <th>Utente</th>
                         <th>App</th>
-                        <th>Category</th>
-                        <th>Quantity</th>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-utente>
+                <ng-template pTemplate="body" let-log>
                     <tr>
-                        <td>{{utente.code}}</td>
-                        <td>{{utente.name}}</td>
-                        <td>{{utente.category}}</td>
-                        <td>{{utente.quantity}}</td>
+                        <td>{{log.data}}</td>
+                        <td>{{log.idUtente}}</td>
+                        <td>{{log.nome_App}}</td>
                     </tr>
                 </ng-template>
             </p-table>
@@ -44,9 +45,10 @@ export class AppMenuComponent implements OnInit {
 
     model: any[];
 
+    logsApp: LogFileApp[] = [];
     utenti: Utente[];
 
-    constructor(public appMain: AppMainComponent, private authService: AuthService) { }
+    constructor(public appMain: AppMainComponent, private logAppService: LogFileAppService, private appService: ApplicazioneService, private utenteService: UtenteService) { }
 
     ngOnInit() {
         this.model = [
@@ -59,6 +61,22 @@ export class AppMenuComponent implements OnInit {
                 ]
             }
         ];
+
+        this.logAppService.getLogs().subscribe(logs => {
+            this.logsApp = logs;
+            console.log(logs)
+            let appoggio;
+            let utenti: any[] = [];
+
+            logs.forEach(function(log) {
+                
+                appoggio = log;
+
+            });
+
+            // console.log(this.logsApp);
+
+        });
     }
 
     onKeydown(event: KeyboardEvent) {
@@ -69,3 +87,4 @@ export class AppMenuComponent implements OnInit {
         }
     }
 }
+

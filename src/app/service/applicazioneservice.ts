@@ -3,6 +3,7 @@ import { Applicazione } from './../api/applicazione';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from "@angular/core";
 import { Observable, retry } from 'rxjs';
+import { Utente } from '../api/utente';
 
 @Injectable()
 export class ApplicazioneService {
@@ -34,9 +35,9 @@ aggiungiApplicazione(appForm): Observable<Applicazione> {
   return this.http.post<Applicazione>(`http://localhost:8080/progettogestionale/applicazionerest/save`, appForm , this.headers);
 }
 
-modificaApplicazione(appForm): Observable<Applicazione> {
+modificaApplicazione(formModifica): Observable<Applicazione> {
   // console.log(JSON.parse(JSON.stringify(appForm)))
-  return this.http.post<Applicazione>(`http://localhost:8080/progettogestionale/applicazionerest/save`, appForm , this.headers);
+  return this.http.post<Applicazione>(`http://localhost:8080/progettogestionale/applicazionerest/modificaapp`, formModifica , this.headers);
 }
 
 rimuoviApplicazione(appId: string): Observable<any> {

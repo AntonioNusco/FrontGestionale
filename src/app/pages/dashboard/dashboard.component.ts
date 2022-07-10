@@ -43,8 +43,9 @@ export class DashboardComponent implements OnInit {
   isApplicazioniCaricate = false;
   caricamentoProgBar: number = 0;
 
-  appOwners: AppOwner[] = [];
   ownerSingolo: AppOwner;
+
+  utenteLoggato: Utente;
 
   constructor(
     private updateService: UpdateService,
@@ -67,6 +68,10 @@ export class DashboardComponent implements OnInit {
     this._initForm();
     this._intervalloLoadingBar();
     this._controlloUtente();
+
+    
+
+    
   }
 
   _controlloUtente() {
@@ -200,6 +205,8 @@ export class DashboardComponent implements OnInit {
       onGoing: [''],
       archive: [''],
       rkd: [''],
+
+      idUtente: [''],
     })
   }
 
@@ -246,21 +253,34 @@ export class DashboardComponent implements OnInit {
   }
 
   _updateApplicazione(appData) {
-    this.applicazioneService.modificaApplicazione(appData).subscribe((app: Applicazione) => {
-      timer(2000).toPromise().then(() => {
-        this.display = false;
-        this._getApplicazioni();
-      })
+    this.utenteService.getUtente(sessionStorage.getItem("Utente")).subscribe(utente => {
+      this.utenteLoggato = utente;
+      console.log(this.utenteLoggato);
+      console.log(appData['idApplicazione']);
+      // JSON.stringify({idApplicazione: appData['idApplicazione'], idUtente: utente.idUtente})
+      this.applicazioneService.modificaApplicazione(appData).subscribe((app: Applicazione) => {
+        // console.log(JSON.stringify({idApplicazione: appData, utente: utente.idUtente}));
+        timer(2000).toPromise().then(() => {
+          this.display = false;
+          this._getApplicazioni();
+        })
+      });
     });
+    
   }
 
   _aggiungiApplicazione(appData) {
-    this.applicazioneService.aggiungiApplicazione(appData).subscribe((app: Applicazione) => {
-      timer(2000).toPromise().then(() => {
-        this.display = false;
-        this._getApplicazioni();
-      })
-    });
+    this.utenteService.getUtente(sessionStorage.getItem("Utente")).subscribe(utente => {
+      this.utenteLoggato = utente;
+
+      this.applicazioneService.aggiungiApplicazione(appData).subscribe((app: Applicazione) => {
+        timer(2000).toPromise().then(() => {
+          this.display = false;
+          this._getApplicazioni();
+        })
+      });
+    })
+    
   }
 
   addClick() {
@@ -359,6 +379,10 @@ export class DashboardComponent implements OnInit {
           this.appForm['archive'].setValue(rescan.archive);
           // this.appForm['exist'].setValue(rescanApp.exist);
           this.appForm['rkd'].setValue(rescan.rkd);
+        })
+
+        this.utenteService.getUtente(sessionStorage.getItem("Utente")).subscribe(utente => {
+          this.appForm['idUtente'].setValue(utente.idUtente);
         })
 
       })
