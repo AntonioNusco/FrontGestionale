@@ -5,6 +5,7 @@ import { LogFileApp } from './api/logfileapp';
 import { LogFileAppService } from './service/logappservice';
 import { ApplicazioneService } from './service/applicazioneservice';
 import { UtenteService } from './service/utenteservice';
+import { map, Observable } from 'rxjs';
 
 @Component({
     selector: 'app-menu',
@@ -29,7 +30,7 @@ import { UtenteService } from './service/utenteservice';
                         <th>App</th>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-log>
+                <ng-template pTemplate="body" let-log >
                     <tr>
                         <td>{{log.data}}</td>
                         <td>{{log.idUtente}}</td>
@@ -46,7 +47,8 @@ export class AppMenuComponent implements OnInit {
     model: any[];
 
     logsApp: LogFileApp[] = [];
-    utenti: Utente[];
+    utenti: any[] = [];
+    utentiAppoggio: Utente[] = [];
 
     constructor(public appMain: AppMainComponent, private logAppService: LogFileAppService, private appService: ApplicazioneService, private utenteService: UtenteService) { }
 
@@ -64,18 +66,12 @@ export class AppMenuComponent implements OnInit {
 
         this.logAppService.getLogs().subscribe(logs => {
             this.logsApp = logs;
-            console.log(logs)
-            let appoggio;
-            let utenti: any[] = [];
 
-            logs.forEach(function(log) {
-                
-                appoggio = log;
-
-            });
-
-            // console.log(this.logsApp);
-
+            this.logsApp.forEach(data => {
+                this.utenti.push(this.utenteService.getUtente(data.idUtente).subscribe(utente => {
+                    this.utentiAppoggio.push(utente);
+                }));
+            })
         });
     }
 
