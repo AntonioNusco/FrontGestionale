@@ -3,7 +3,7 @@ import { Utente } from "./utente";
 
 export interface LogFileApp {
     idLogApp?: number;
-    data?: Date;
+    data?: string;
     idApplicazione?: number;
     idUtente?: string;
     nome_App?: string;

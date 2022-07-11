@@ -21,7 +21,8 @@ import { map, Observable } from 'rxjs';
             </ul>
         </div>
 
-        <div class="container-log" style="margin-top: 2.5rem;">
+        <div class="container-log" style="margin-top: 2.5rem;" *ngIf="modificatore">
+        <!-- <div class="container-log" style="margin-top: 2.5rem;"> -->
             <p-table [value]="logsApp" [scrollable]="true" scrollHeight="500px" responsiveLayout="scroll">
                 <ng-template pTemplate="header">
                     <tr>
@@ -32,7 +33,7 @@ import { map, Observable } from 'rxjs';
                 </ng-template>
                 <ng-template pTemplate="body" let-log >
                     <tr>
-                        <td>{{log.data}}</td>
+                        <td>{{log.data[2]}}/{{log.data[1]}}/{{log.data[0]}}</td>
                         <td>{{log.idUtente}}</td>
                         <td>{{log.nome_App}}</td>
                     </tr>
@@ -50,29 +51,44 @@ export class AppMenuComponent implements OnInit {
     utenti: any[] = [];
     utentiAppoggio: Utente[] = [];
 
+    utenteLoggato: Utente;
+
+    modificatore: boolean = false;
+
     constructor(public appMain: AppMainComponent, private logAppService: LogFileAppService, private appService: ApplicazioneService, private utenteService: UtenteService) { }
 
     ngOnInit() {
-        this.model = [
-            {
-                items: [
-                    {label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['dashboard']},
-                    {label: 'App Eliminate', icon: 'pi pi-fw pi-home', routerLink: ['appeliminate']},
-                    {label: 'Utenti', icon: 'pi pi-fw pi-home', routerLink: ['utenti']},
-                    {label: 'Logout', icon: 'pi pi-fw pi-home', routerLink: ['logout']},
-                ]
+
+        this.utenteService.getUtente(sessionStorage.getItem("Utente")).subscribe(utente => {
+            this.utenteLoggato = utente;
+
+            if(this.utenteLoggato.ruolo) {
+                this.modificatore = true;
             }
-        ];
+
+            this.model = [
+                {
+                    items: [
+                        {label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['dashboard']},
+                        {label: 'App Eliminate', icon: 'pi pi-fw pi-home', routerLink: ['appeliminate'], visible: this.modificatore},
+                        {label: 'Utenti', icon: 'pi pi-fw pi-home', routerLink: ['utenti'], visible: this.modificatore},
+                        {label: 'Logout', icon: 'pi pi-fw pi-home', routerLink: ['logout']},
+                    ]
+                }
+            ];
+        })
 
         this.logAppService.getLogs().subscribe(logs => {
-            this.logsApp = logs;
+            this.logsApp = logs.slice().reverse();
 
-            this.logsApp.forEach(data => {
-                this.utenti.push(this.utenteService.getUtente(data.idUtente).subscribe(utente => {
-                    this.utentiAppoggio.push(utente);
-                }));
-            })
+            // this.logsApp.forEach(data => {
+            //     this.utenti.push(this.utenteService.getUtente(data.idUtente).subscribe(utente => {
+            //         this.utentiAppoggio.push(utente);
+            //     }));
+            // })
         });
+
+        
     }
 
     onKeydown(event: KeyboardEvent) {

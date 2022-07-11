@@ -1,32 +1,32 @@
 <p-toast></p-toast>
 <div class="grid">
-  <div class="col-12 lg:col-6 xl:col-6">
-      <div class="card mb-3">
-          <div class="flex justify-content-between mb-3">
-              <div>
-                  <span class="block text-500 font-medium mb-3">Applicazioni Totali</span>
-                  <div class="text-900 font-medium text-xl">{{ applicazioni.length }}</div>
-              </div>
-              <div class="flex align-items-center justify-content-center bg-blue-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
-                  <i class="pi pi-server text-blue-500 text-xl"></i>
-              </div>
-          </div>
-      </div>
-  </div>
-  <div class="col-12 lg:col-6 xl:col-6">
-      <div class="card mb-3">
-          <div class="flex justify-content-between mb-3">
-              <div>
-                  <span class="block text-500 font-medium mb-3">Prodotti Pubblicati</span>
-                  <div class="text-900 font-medium text-xl">152</div>
-              </div>
-              <div class="flex align-items-center justify-content-center bg-orange-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
-                  <i class="pi pi-shopping-cart text-orange-500 text-xl"></i>
-              </div>
-          </div>
-      </div>
-  </div>
-  <!-- <div class="col-12 lg:col-4 xl:col-4">
+    <div class="col-12 lg:col-6 xl:col-6">
+        <div class="card mb-3">
+            <div class="flex justify-content-between mb-3">
+                <div>
+                    <span class="block text-500 font-medium mb-3">Applicazioni Totali</span>
+                    <div class="text-900 font-medium text-xl">{{ applicazioni.length }}</div>
+                </div>
+                <div class="flex align-items-center justify-content-center bg-blue-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                    <i class="pi pi-server text-blue-500 text-xl"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 lg:col-6 xl:col-6">
+        <div class="card mb-3">
+            <div class="flex justify-content-between mb-3">
+                <div>
+                    <span class="block text-500 font-medium mb-3">Prodotti Pubblicati</span>
+                    <div class="text-900 font-medium text-xl">152</div>
+                </div>
+                <div class="flex align-items-center justify-content-center bg-orange-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                    <i class="pi pi-shopping-cart text-orange-500 text-xl"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="col-12 lg:col-4 xl:col-4">
       <div class="card mb-3">
           <div class="flex justify-content-between mb-3">
               <div>
@@ -42,62 +42,62 @@
 </div>
 
 <div class="grid">
-  <div class="col-12 xl:col-12">
-    <div class="card">
-      <div>
+    <div class="col-12 xl:col-12">
+        <div class="card">
+            <div>
 
-        <div class="grid">
-          <div class="col-4 xl:col-4"></div>
+                <div class="grid">
+                    <div class="col-4 xl:col-4"></div>
 
-          <div class="col-4 xl:col-4">
-            <h5 class="text-center">Applicazioni</h5>
-          </div>
+                    <div class="col-4 xl:col-4">
+                        <h5 class="text-center">Applicazioni</h5>
+                    </div>
 
-          <div class="col-4 xl:col-4">
-            <button pButton pRipple icon="pi pi-plus" type="button" label="Aggiungi App" class="p-button-success custom-btn" *ngIf="isApplicazioniCaricate" (click)="addClick()"></button>
-          </div>
+                    <div class="col-4 xl:col-4">
+                        <button pButton pRipple icon="pi pi-plus" type="button" label="Aggiungi App" class="p-button-success custom-btn" *ngIf="isApplicazioniCaricate" (click)="addClick()"></button>
+                    </div>
+                </div>
+
+                <p-progressBar [value]="caricamentoProgBar" *ngIf="!isApplicazioniCaricate"></p-progressBar>
+
+                <div class="grid" *ngIf="isApplicazioniCaricate">
+                    <div class="col-6 xl:col-6">
+                        <p-autoComplete class="p-fluid" placeholder="Filtra per nome" [(ngModel)]="appSelezionate" [suggestions]="appFiltrate" (completeMethod)="filtraggioNomeApp($event)" (onClear)="resetFiltro()" field="nome_App"></p-autoComplete>
+                    </div>
+
+                    <div class="col-6 xl:col-6">
+                        <p-autoComplete class="p-fluid" placeholder="Filtra per apm" [(ngModel)]="appSelezionate" [suggestions]="appFiltrate" (completeMethod)="filtraggioApmApp($event)" (onClear)="resetFiltro()" field="nome_App"></p-autoComplete>
+                    </div>
+                </div>
+
+            </div>
+            <p-table [value]="appFiltrate" [paginator]="true" [rows]="7" responsiveLayout="scroll" *ngIf="isApplicazioniCaricate">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Nome App</th>
+                        <th>APM Code</th>
+                        <th>Owner App</th>
+                        <th>Stato App</th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-appFiltrata>
+                    <tr>
+                        <td>{{ appFiltrata.nome_App }}</td>
+                        <td>{{ appFiltrata.apmCode }}</td>
+                        <td>{{ appFiltrata.ownerOnboarding }}</td>
+                        <td>{{ appFiltrata.afpStatus }}</td>
+                        <td>
+                            <button pButton pRipple type="button" icon="pi pi-search" class="p-button p-component p-button-text p-button-icon-only" (click)="onSubmit(); getAppId(appFiltrata.idApplicazione)"></button>
+                            <button pButton pRipple type="button" icon="pi pi-trash" class="p-button p-component p-button-text p-button-icon-only ml-4" (click)="deleteApp(appFiltrata.idApplicazione)"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
         </div>
-
-        <p-progressBar [value]="caricamentoProgBar" *ngIf="!isApplicazioniCaricate"></p-progressBar>
-
-        <div class="grid" *ngIf="isApplicazioniCaricate">
-          <div class="col-6 xl:col-6">
-            <p-autoComplete class="p-fluid" placeholder="Filtra per nome" [(ngModel)]="appSelezionate" [suggestions]="appFiltrate" (completeMethod)="filtraggioNomeApp($event)" (onClear)="resetFiltro()" field="nome_App"></p-autoComplete>
-          </div>
-
-          <div class="col-6 xl:col-6">
-            <p-autoComplete class="p-fluid" placeholder="Filtra per apm" [(ngModel)]="appSelezionate" [suggestions]="appFiltrate" (completeMethod)="filtraggioApmApp($event)" (onClear)="resetFiltro()" field="nome_App"></p-autoComplete>
-          </div>
-        </div>
-
-      </div>
-      <p-table [value]="appFiltrate" [paginator]="true" [rows]="7" responsiveLayout="scroll" *ngIf="isApplicazioniCaricate">
-        <ng-template pTemplate="header">
-          <tr>
-            <th>Nome App</th>
-            <th>APM Code</th>
-            <th>Owner App</th>
-            <th>Stato App</th>
-            <th></th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-appFiltrata>
-          <tr>
-            <td>{{ appFiltrata.nome_App }}</td>
-            <td>{{ appFiltrata.apmCode }}</td>
-            <td>{{ appFiltrata.ownerOnboarding }}</td>
-            <td>{{ appFiltrata.afpStatus }}</td>
-            <td>
-              <button pButton pRipple type="button" icon="pi pi-search" class="p-button p-component p-button-text p-button-icon-only" (click)="onSubmit(); getAppId(appFiltrata.idApplicazione)"></button>
-              <button pButton pRipple type="button" icon="pi pi-trash" class="p-button p-component p-button-text p-button-icon-only ml-4" (click)="deleteApp(appFiltrata.idApplicazione)"></button>
-            </td>
-          </tr>
-        </ng-template>
-      </p-table>
     </div>
-  </div>
 
-  <!-- <div class="col-12 xl:col-4">
+    <!-- <div class="col-12 xl:col-4">
     <div class="card">
       <h5 class="text-center">Update</h5>
       <p-table [value]="updates" [paginator]="true" [rows]="7" responsiveLayout="scroll">
@@ -119,406 +119,406 @@
     </div>
   </div> -->
 
-  <div class="col-12 xl:col-12 lg:col-12">
-    <p-dialog [header]='isCaricato ? "Dettagli Applicazione" : ""' [(visible)]="display" modal="modal" showEffect="fade" [style]="{width: '70vw'}">
+    <div class="col-12 xl:col-12 lg:col-12">
+        <p-dialog [header]='isCaricato ? "Dettagli Applicazione" : ""' [(visible)]="display" modal="modal" showEffect="fade" [style]="{width: '70vw'}">
 
-      <div class="grid">
-        <div class="col-4 xl:col-4"></div>
+            <div class="grid">
+                <div class="col-4 xl:col-4"></div>
 
-        <div class="col-4 xl:col-4">
-          <button pButton pRipple icon="pi pi-plus" type="button" [label]="editMode ? 'Modifica App' : 'Aggiungi App'" class="p-button-success" *ngIf="isCaricato" (click)="addOrModify()" [style]="{width: '100%'}"></button>
-        </div>
-
-        <div class="col-4 xl:col-4"></div>
-      </div>
-
-      <p-progressSpinner animationDuration=".5s" *ngIf="!isCaricato" class="spinner" [style]="{width: '50px', height: '50px'}"></p-progressSpinner>
-      <!-- BLOCCO ANAGRAFICA APPLICAZIONE -->
-
-      <p-fieldset legend="Anagrafica Applicazione" styleClass="mb-4" [toggleable]="true" *ngIf="isCaricato">
-        <div class="grid">
-          <div class="col-12 xl:col-12 lg:col-6">
-            <form [formGroup]="form" enctype="multipart/form-data">
-
-              <div class="p-fluid p-formgroup grid mb-3">
-                <div class="p-field col">
-                  <label for="nomeApp">Nome App</label>
-                  <input type="text" id="nomeApp" pInputText formControlName="nome_App">
-                </div>
-              </div>
-
-              <div class="p-fluid p-formgroup grid mb-3">
-                <div class="p-field col">
-                  <label for="apmCode">APM Code</label>
-                  <input type="text" id="apmCode" pInputText formControlName="apmCode">
+                <div class="col-4 xl:col-4">
+                    <button pButton pRipple icon="pi pi-plus" type="button" [label]="editMode ? 'Modifica App' : 'Aggiungi App'" class="p-button-success" *ngIf="isCaricato" (click)="addOrModify()" [style]="{width: '100%'}"></button>
                 </div>
 
-                <div class="p-field col">
-                  <label for="ownerAFP">Owner AFP</label>
-                  <input type="text" id="ownerAFP" pInputText formControlName="ownerAFP">
-                </div>
+                <div class="col-4 xl:col-4"></div>
+            </div>
 
-                <div class="p-field col">
-                  <label for="afpStatus">AFP Status</label>
-                  <input type="text" id="afpStatus" pInputText formControlName="afpStatus">
-                </div>
-              </div>
+            <p-progressSpinner animationDuration=".5s" *ngIf="!isCaricato" class="spinner" [style]="{width: '50px', height: '50px'}"></p-progressSpinner>
+            <!-- BLOCCO ANAGRAFICA APPLICAZIONE -->
 
-              <div class="p-fluid p-formgroup grid mb-3">
-                <div class="p-field col">
-                  <label for="pubblicatoDashboard">Pubblicato Dashboard</label>
-                  <input type="text" id="pubblicatoDashboard" pInputText formControlName="pubblicatoDashboard">
-                </div>
+            <p-fieldset legend="Anagrafica Applicazione" styleClass="mb-4" [toggleable]="true" *ngIf="isCaricato">
+                <div class="grid">
+                    <div class="col-12 xl:col-12 lg:col-6">
+                        <form [formGroup]="form" enctype="multipart/form-data">
 
-                <div class="p-field col">
-                  <label for="repoAvailability">Repo Availability</label>
-                  <input type="text" id="repoAvailability" pInputText formControlName="repoAvailability">
-                </div>
+                            <div class="p-fluid p-formgroup grid mb-3">
+                                <div class="p-field col">
+                                    <label for="nomeApp">Nome App</label>
+                                    <input type="text" id="nomeApp" pInputText formControlName="nome_App">
+                                </div>
+                            </div>
 
-                <div class="p-field col">
-                  <label for="fase">Fase</label>
-                  <input type="text" id="fase" pInputText formControlName="fase">
-                </div>
-              </div>
+                            <div class="p-fluid p-formgroup grid mb-3">
+                                <div class="p-field col">
+                                    <label for="apmCode">APM Code</label>
+                                    <input type="text" id="apmCode" pInputText formControlName="apmCode">
+                                </div>
 
-              <div class="p-fluid p-formgroup grid mb-3">
-                <div class="p-field col">
-                  <label for="insertedInCastProgram">Inserted In Cast Program</label>
-                  <input type="text" id="insertedInCastProgram" pInputText formControlName="insertedInCastProgram">
-                </div>
+                                <div class="p-field col">
+                                    <label for="ownerAFP">Owner AFP</label>
+                                    <input type="text" id="ownerAFP" pInputText formControlName="ownerAFP">
+                                </div>
 
-                <div class="p-field col">
-                  <label for="stakeholderEngagement">Stakeholder Engagement</label>
-                  <input type="text" id="stakeholderEngagement" pInputText formControlName="stakeholderEngagement">
-                </div>
+                                <div class="p-field col">
+                                    <label for="afpStatus">AFP Status</label>
+                                    <input type="text" id="afpStatus" pInputText formControlName="afpStatus">
+                                </div>
+                            </div>
 
-                <div class="p-field col">
-                  <label for="primaRestitution">Prima Restitution</label>
-                  <input type="text" id="primaRestitution" pInputText formControlName="primaRestitution">
-                </div>
-              </div>
+                            <div class="p-fluid p-formgroup grid mb-3">
+                                <div class="p-field col">
+                                    <label for="pubblicatoDashboard">Pubblicato Dashboard</label>
+                                    <input type="text" id="pubblicatoDashboard" pInputText formControlName="pubblicatoDashboard">
+                                </div>
 
-              <div class="p-fluid p-formgroup grid mb-3">
-                <div class="p-field col">
-                  <label for="launchingMeetingDataGatheringStarting">Launching Meeting Data Gathering</label>
-                  <input type="text" id="launchingMeetingDataGatheringStarting" pInputText formControlName="launchingMeetingDataGatheringStarting">
-                </div>
+                                <div class="p-field col">
+                                    <label for="repoAvailability">Repo Availability</label>
+                                    <input type="text" id="repoAvailability" pInputText formControlName="repoAvailability">
+                                </div>
 
-                <div class="p-field col">
-                  <label for="stakeholderBrief">Stakeholder Brief</label>
-                  <input type="text" id="stakeholderBrief" pInputText formControlName="stakeholderBrief">
-                </div>
+                                <div class="p-field col">
+                                    <label for="fase">Fase</label>
+                                    <input type="text" id="fase" pInputText formControlName="fase">
+                                </div>
+                            </div>
 
-                <div class="p-field col">
-                  <label for="sourceCodeFinalDelivery">Source Code Final Delivery</label>
-                  <input type="text" id="sourceCodeFinalDelivery" pInputText formControlName="sourceCodeFinalDelivery">
-                </div>
-              </div>
+                            <div class="p-fluid p-formgroup grid mb-3">
+                                <div class="p-field col">
+                                    <label for="insertedInCastProgram">Inserted In Cast Program</label>
+                                    <input type="text" id="insertedInCastProgram" pInputText formControlName="insertedInCastProgram">
+                                </div>
 
-              <div class="p-fluid p-formgroup grid mb-3">
-                <div class="p-field col">
-                  <label for="done">Done booleano</label>
-                  <input type="text" id="done" pInputText formControlName="done">
-                </div>
-                <div class="p-field col">
-                  <label for="linkConfluence">Link Confluence</label>
-                  <input type="text" id="linkConfluence" pInputText formControlName="linkConfluence">
-                </div>
-                <div class="p-field col">
-                  <label for="businessCriticality">Business Criticality</label>
-                  <input type="text" id="businessCriticality" pInputText formControlName="businessCriticality">
-                </div>
-              </div>
+                                <div class="p-field col">
+                                    <label for="stakeholderEngagement">Stakeholder Engagement</label>
+                                    <input type="text" id="stakeholderEngagement" pInputText formControlName="stakeholderEngagement">
+                                </div>
 
-              <div class="p-fluid p-formgroup grid mb-3">
-                <div class="p-field col">
-                  <label for="devMethodology">Dev Methodology</label>
-                  <input type="text" id="devMethodology" pInputText formControlName="devMethodology">
-                </div>
-                <div class="p-field col">
-                  <label for="provider">Provider</label>
-                  <input type="text" id="provider" pInputText formControlName="provider">
-                </div>
-                <!-- <div class="p-field col">
+                                <div class="p-field col">
+                                    <label for="primaRestitution">Prima Restitution</label>
+                                    <input type="text" id="primaRestitution" pInputText formControlName="primaRestitution">
+                                </div>
+                            </div>
+
+                            <div class="p-fluid p-formgroup grid mb-3">
+                                <div class="p-field col">
+                                    <label for="launchingMeetingDataGatheringStarting">Launching Meeting Data Gathering</label>
+                                    <input type="text" id="launchingMeetingDataGatheringStarting" pInputText formControlName="launchingMeetingDataGatheringStarting">
+                                </div>
+
+                                <div class="p-field col">
+                                    <label for="stakeholderBrief">Stakeholder Brief</label>
+                                    <input type="text" id="stakeholderBrief" pInputText formControlName="stakeholderBrief">
+                                </div>
+
+                                <div class="p-field col">
+                                    <label for="sourceCodeFinalDelivery">Source Code Final Delivery</label>
+                                    <input type="text" id="sourceCodeFinalDelivery" pInputText formControlName="sourceCodeFinalDelivery">
+                                </div>
+                            </div>
+
+                            <div class="p-fluid p-formgroup grid mb-3">
+                                <div class="p-field col">
+                                    <label for="done">Done booleano</label>
+                                    <input type="text" id="done" pInputText formControlName="done">
+                                </div>
+                                <div class="p-field col">
+                                    <label for="linkConfluence">Link Confluence</label>
+                                    <input type="text" id="linkConfluence" pInputText formControlName="linkConfluence">
+                                </div>
+                                <div class="p-field col">
+                                    <label for="businessCriticality">Business Criticality</label>
+                                    <input type="text" id="businessCriticality" pInputText formControlName="businessCriticality">
+                                </div>
+                            </div>
+
+                            <div class="p-fluid p-formgroup grid mb-3">
+                                <div class="p-field col">
+                                    <label for="devMethodology">Dev Methodology</label>
+                                    <input type="text" id="devMethodology" pInputText formControlName="devMethodology">
+                                </div>
+                                <div class="p-field col">
+                                    <label for="provider">Provider</label>
+                                    <input type="text" id="provider" pInputText formControlName="provider">
+                                </div>
+                                <!-- <div class="p-field col">
                   <label for="exist">Exist boolean</label>
                   <input type="text" id="exist" pInputText formControlName="exist">
                 </div> -->
-              </div>
-            </form>
-          </div>
-        </div>
-      </p-fieldset>
-
-      <!-- BLOCCO INFO TI APPLICAZIONE -->
-
-      <p-fieldset legend="Info IT Applicazione" styleClass="mb-4" [toggleable]="true" *ngIf="isCaricato">
-        <div class="grid">
-          <div class="col-12 xl:col-12 lg:col-6">
-            <form [formGroup]="form">
-
-              <div class="p-fluid p-formgroup grid mb-3">
-                <div class="p-field col">
-                  <label for="gdsUnit">GDS Unit</label>
-                  <input type="text" id="gdsUnit" pInputText formControlName="gdsUnit">
+                            </div>
+                        </form>
+                    </div>
                 </div>
+            </p-fieldset>
 
-                <div class="p-field col">
-                  <label for="tecnologia">Tecnologia</label>
-                  <input type="text" id="tecnologia" pInputText formControlName="tecnologia">
+            <!-- BLOCCO INFO TI APPLICAZIONE -->
+
+            <p-fieldset legend="Info IT Applicazione" styleClass="mb-4" [toggleable]="true" *ngIf="isCaricato">
+                <div class="grid">
+                    <div class="col-12 xl:col-12 lg:col-6">
+                        <form [formGroup]="form">
+
+                            <div class="p-fluid p-formgroup grid mb-3">
+                                <div class="p-field col">
+                                    <label for="gdsUnit">GDS Unit</label>
+                                    <input type="text" id="gdsUnit" pInputText formControlName="gdsUnit">
+                                </div>
+
+                                <div class="p-field col">
+                                    <label for="tecnologia">Tecnologia</label>
+                                    <input type="text" id="tecnologia" pInputText formControlName="tecnologia">
+                                </div>
+
+                                <div class="p-field col">
+                                    <label for="macchina">Macchina</label>
+                                    <input type="text" id="macchina" pInputText formControlName="macchina">
+                                </div>
+                            </div>
+
+                            <div class="p-fluid p-formgroup grid mb-3">
+                                <div class="p-field col">
+                                    <label for="greenItIndex">Green IT Index</label>
+                                    <input type="text" id="greenItIndex" pInputText formControlName="greenItIndex">
+                                </div>
+
+                                <div class="p-field col">
+                                    <label for="soloCMS">Solo CMS</label>
+                                    <input type="text" id="soloCMS" pInputText formControlName="soloCMS">
+                                </div>
+
+                                <div class="p-field col">
+                                    <label for="nodoConsole">Nodo Console</label>
+                                    <input type="text" id="nodoConsole" pInputText formControlName="nodoConsole">
+                                </div>
+                            </div>
+
+                            <div class="p-fluid p-formgroup grid mb-3">
+                                <div class="p-field col">
+                                    <label for="serverManager">Server Manager</label>
+                                    <input type="text" id="serverManager" pInputText formControlName="serverManager">
+                                </div>
+
+                                <div class="p-field col">
+                                    <label for="avgAnalysisTime">AVG Analysis Time</label>
+                                    <input type="text" id="avgAnalysisTime" pInputText formControlName="avgAnalysisTime">
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
                 </div>
+            </p-fieldset>
 
-                <div class="p-field col">
-                  <label for="macchina">Macchina</label>
-                  <input type="text" id="macchina" pInputText formControlName="macchina">
+            <!-- BLOCCO ONBOARDING APPLICAZIONE -->
+
+            <p-fieldset legend="OnBoarding Applicazione" styleClass="mb-4" [toggleable]="true" *ngIf="isCaricato">
+                <div class="grid">
+                    <div class="col-12 xl:col-12 lg:col-6">
+                        <form [formGroup]="form">
+
+                            <div class="p-fluid p-formgroup grid mb-3">
+                                <div class="p-field col">
+                                    <label for="ownerOnboarding">Owner On Boarding</label>
+                                    <input type="text" id="ownerOnboarding" pInputText formControlName="ownerOnboarding">
+                                </div>
+
+                                <div class="p-field col">
+                                    <label for="onboardingKitClosing">OnBoarding Kit Closing</label>
+                                    <input type="text" id="onboardingKitClosing" pInputText formControlName="onboardingKitClosing">
+                                </div>
+
+                                <div class="p-field col">
+                                    <label for="onBoardingKitDelivery">OnBoarding Kit Delivery</label>
+                                    <input type="text" id="onBoardingKitDelivery" pInputText formControlName="onBoardingKitDelivery">
+                                </div>
+                            </div>
+
+                            <div class="p-fluid p-formgroup grid mb-3">
+
+                            </div>
+
+                        </form>
+                    </div>
                 </div>
-              </div>
+            </p-fieldset>
 
-              <div class="p-fluid p-formgroup grid mb-3">
-                <div class="p-field col">
-                  <label for="greenItIndex">Green IT Index</label>
-                  <input type="text" id="greenItIndex" pInputText formControlName="greenItIndex">
+            <!-- BLOCCO INFO AUTOMATIZZAZIONE APPLICAZIONE -->
+
+            <p-fieldset legend="Info Automation Applicazione" styleClass="mb-4" [toggleable]="true" *ngIf="isCaricato">
+                <div class="grid">
+                    <div class="col-12 xl:col-12 lg:col-6">
+                        <form [formGroup]="form">
+
+                            <div class="p-fluid p-formgroup grid mb-3">
+                                <div class="p-field col">
+                                    <label for="jiraautomationActivation">Jira Automation Activation</label>
+                                    <input type="text" id="jiraautomationActivation" pInputText formControlName="jiraautomationActivation">
+                                </div>
+
+                                <div class="p-field col">
+                                    <label for="automationStatus">Automation Status</label>
+                                    <input type="text" id="automationStatus" pInputText formControlName="automationStatus">
+                                </div>
+
+                                <div class="p-field col">
+                                    <label for="automationEnablingDate">Automation Enabling Date</label>
+                                    <input type="text" id="automationEnablingDate" pInputText formControlName="automationEnablingDate">
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
                 </div>
+            </p-fieldset>
 
-                <div class="p-field col">
-                  <label for="soloCMS">Solo CMS</label>
-                  <input type="text" id="soloCMS" pInputText formControlName="soloCMS">
+            <!-- BLOCCO NOTE APPLICAZIONE -->
+
+            <p-fieldset legend="Note Applicazione" styleClass="mb-4" [toggleable]="true" *ngIf="isCaricato">
+                <div class="grid">
+                    <div class="col-12 xl:col-12 lg:col-6">
+                        <form [formGroup]="form">
+
+                            <div class="p-fluid p-formgroup grid mb-3">
+                                <div class="p-field col">
+                                    <label for="noteOnboarding">Note OnBoarding</label>
+                                    <textarea type="text" id="noteOnboarding" pInputText formControlName="noteOnboarding" [rows]="7" [cols]="30"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="p-fluid p-formgroup grid mb-3">
+                                <div class="p-field col">
+                                    <label for="noteAppOwner">Note App Owner</label>
+                                    <textarea type="text" id="noteAppOwner" pInputText formControlName="noteAppOwner" [rows]="7" [cols]="30"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="p-fluid p-formgroup grid mb-3">
+                                <div class="p-field col">
+                                    <label for="automationNotes">Automation Notes</label>
+                                    <textarea type="text" id="automationNotes" pInputText formControlName="automationNotes" [rows]="7" [cols]="30"></textarea>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
                 </div>
+            </p-fieldset>
 
-                <div class="p-field col">
-                  <label for="nodoConsole">Nodo Console</label>
-                  <input type="text" id="nodoConsole" pInputText formControlName="nodoConsole">
+            <!-- BLOCCO APPOWNER APPLICAZIONE -->
+            <p-fieldset legend="Owner Applicazione" styleClass="mb-4" [toggleable]="true" *ngIf="isCaricato">
+                <div class="grid">
+                    <div class="col-12 xl:col-12 lg:col-6">
+                        <form [formGroup]="form">
+
+                            <div class="p-fluid p-formgroup grid mb-3">
+                                <div class="p-field col">
+                                    <label for="nome">Nome Owner</label>
+                                    <input type="text" id="nome" pInputText formControlName="nome">
+                                </div>
+
+                                <div class="p-field col">
+                                    <label for="cognome">Cognome Owner</label>
+                                    <input type="text" id="cognome" pInputText formControlName="cognome">
+                                </div>
+                            </div>
+
+                            <div class="p-fluid p-formgroup grid mb-3">
+                                <div class="p-field col">
+                                    <label for="email">Email Owner</label>
+                                    <input type="text" id="email" pInputText formControlName="email">
+                                </div>
+
+                                <div class="p-field col">
+                                    <label for="cell">Cellulare Owner</label>
+                                    <input type="text" id="cell" pInputText formControlName="cell">
+                                </div>
+                            </div>
+
+                            <div class="p-fluid p-formgroup grid mb-3">
+                                <div class="p-field col">
+                                    <label for="dsUnit">DS Unite Owner</label>
+                                    <input type="text" id="dsUnit" pInputText formControlName="dsUnit">
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
                 </div>
-              </div>
+            </p-fieldset>
 
-              <div class="p-fluid p-formgroup grid mb-3">
-                <div class="p-field col">
-                  <label for="serverManager">Server Manager</label>
-                  <input type="text" id="serverManager" pInputText formControlName="serverManager">
+            <!-- BLOCCO RESCAN APPLICAZIONE -->
+            <p-fieldset legend="Rescam Applicazione" styleClass="mb-4" [toggleable]="true" *ngIf="isCaricato">
+                <div class="grid">
+                    <div class="col-12 xl:col-12 lg:col-6">
+                        <form [formGroup]="form">
+
+                            <div class="p-fluid p-formgroup grid mb-3">
+                                <div class="p-field col">
+                                    <label for="nRescan">N° Rescan</label>
+                                    <input type="text" id="nRescan" pInputText formControlName="nRescan">
+                                </div>
+
+                                <div class="p-field col">
+                                    <label for="newOb">New Ob</label>
+                                    <input type="text" id="newOb" pInputText formControlName="newOb">
+                                </div>
+                            </div>
+
+                            <div class="p-fluid p-formgroup grid mb-3">
+                                <div class="p-field col">
+                                    <label for="py">PY</label>
+                                    <input type="text" id="py" pInputText formControlName="py">
+                                </div>
+
+                                <div class="p-field col">
+                                    <label for="ytd">YTD</label>
+                                    <input type="text" id="ytd" pInputText formControlName="ytd">
+                                </div>
+                            </div>
+
+                            <div class="p-fluid p-formgroup grid mb-3">
+                                <div class="p-field col">
+                                    <label for="afpe">AFPE</label>
+                                    <input type="text" id="afpe" pInputText formControlName="afpe">
+                                </div>
+
+                                <div class="p-field col">
+                                    <label for="yoyRolling">YOY Rolling</label>
+                                    <input type="text" id="yoyRolling" pInputText formControlName="yoyRolling">
+                                </div>
+                            </div>
+
+                            <div class="p-fluid p-formgroup grid mb-3">
+                                <div class="p-field col">
+                                    <label for="last_Rescan">Ultimo Rescan</label>
+                                    <input type="text" id="last_Rescan" pInputText formControlName="last_Rescan">
+                                </div>
+
+                                <div class="p-field col">
+                                    <label for="onGoing">OnGoing true/false</label>
+                                    <input type="text" id="onGoing" pInputText formControlName="onGoing">
+                                </div>
+                            </div>
+
+                            <div class="p-fluid p-formgroup grid mb-3">
+                                <div class="p-field col">
+                                    <label for="archive">Archivio</label>
+                                    <input type="text" id="archive" pInputText formControlName="archive">
+                                </div>
+
+                                <div class="p-field col">
+                                    <label for="rkd">RKD</label>
+                                    <input type="text" id="rkd" pInputText formControlName="rkd">
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
                 </div>
+            </p-fieldset>
 
-                <div class="p-field col">
-                  <label for="avgAnalysisTime">AVG Analysis Time</label>
-                  <input type="text" id="avgAnalysisTime" pInputText formControlName="avgAnalysisTime">
-                </div>
-              </div>
-
-            </form>
-          </div>
-        </div>
-      </p-fieldset>
-
-      <!-- BLOCCO ONBOARDING APPLICAZIONE -->
-
-      <p-fieldset legend="OnBoarding Applicazione" styleClass="mb-4" [toggleable]="true" *ngIf="isCaricato">
-        <div class="grid">
-          <div class="col-12 xl:col-12 lg:col-6">
-            <form [formGroup]="form">
-
-              <div class="p-fluid p-formgroup grid mb-3">
-                <div class="p-field col">
-                  <label for="ownerOnboarding">Owner On Boarding</label>
-                  <input type="text" id="ownerOnboarding" pInputText formControlName="ownerOnboarding">
-                </div>
-
-                <div class="p-field col">
-                  <label for="onboardingKitClosing">OnBoarding Kit Closing</label>
-                  <input type="text" id="onboardingKitClosing" pInputText formControlName="onboardingKitClosing">
-                </div>
-
-                <div class="p-field col">
-                  <label for="onBoardingKitDelivery">OnBoarding Kit Delivery</label>
-                  <input type="text" id="onBoardingKitDelivery" pInputText formControlName="onBoardingKitDelivery">
-                </div>
-              </div>
-
-              <div class="p-fluid p-formgroup grid mb-3">
-
-              </div>
-
-            </form>
-          </div>
-        </div>
-      </p-fieldset>
-
-      <!-- BLOCCO INFO AUTOMATIZZAZIONE APPLICAZIONE -->
-
-      <p-fieldset legend="Info Automation Applicazione" styleClass="mb-4" [toggleable]="true" *ngIf="isCaricato">
-        <div class="grid">
-          <div class="col-12 xl:col-12 lg:col-6">
-            <form [formGroup]="form">
-
-              <div class="p-fluid p-formgroup grid mb-3">
-                <div class="p-field col">
-                  <label for="jiraautomationActivation">Jira Automation Activation</label>
-                  <input type="text" id="jiraautomationActivation" pInputText formControlName="jiraautomationActivation">
-                </div>
-
-                <div class="p-field col">
-                  <label for="automationStatus">Automation Status</label>
-                  <input type="text" id="automationStatus" pInputText formControlName="automationStatus">
-                </div>
-
-                <div class="p-field col">
-                  <label for="automationEnablingDate">Automation Enabling Date</label>
-                  <input type="text" id="automationEnablingDate" pInputText formControlName="automationEnablingDate">
-                </div>
-              </div>
-
-            </form>
-          </div>
-        </div>
-      </p-fieldset>
-
-      <!-- BLOCCO NOTE APPLICAZIONE -->
-
-      <p-fieldset legend="Note Applicazione" styleClass="mb-4" [toggleable]="true" *ngIf="isCaricato">
-        <div class="grid">
-          <div class="col-12 xl:col-12 lg:col-6">
-            <form [formGroup]="form">
-
-              <div class="p-fluid p-formgroup grid mb-3">
-                <div class="p-field col">
-                  <label for="noteOnboarding">Note OnBoarding</label>
-                  <textarea type="text" id="noteOnboarding" pInputText formControlName="noteOnboarding" [rows]="7" [cols]="30"></textarea>
-                </div>
-              </div>
-
-              <div class="p-fluid p-formgroup grid mb-3">
-                <div class="p-field col">
-                  <label for="noteAppOwner">Note App Owner</label>
-                  <textarea type="text" id="noteAppOwner" pInputText formControlName="noteAppOwner" [rows]="7" [cols]="30"></textarea>
-                </div>
-              </div>
-
-              <div class="p-fluid p-formgroup grid mb-3">
-                <div class="p-field col">
-                  <label for="automationNotes">Automation Notes</label>
-                  <textarea type="text" id="automationNotes" pInputText formControlName="automationNotes" [rows]="7" [cols]="30"></textarea>
-                </div>
-              </div>
-
-            </form>
-          </div>
-        </div>
-      </p-fieldset>
-
-      <!-- BLOCCO APPOWNER APPLICAZIONE -->
-      <p-fieldset legend="Owner Applicazione" styleClass="mb-4" [toggleable]="true" *ngIf="isCaricato">
-        <div class="grid">
-          <div class="col-12 xl:col-12 lg:col-6">
-            <form [formGroup]="form">
-
-              <div class="p-fluid p-formgroup grid mb-3">
-                <div class="p-field col">
-                  <label for="nome">Nome Owner</label>
-                  <input type="text" id="nome" pInputText formControlName="nome">
-                </div>
-
-                <div class="p-field col">
-                  <label for="cognome">Cognome Owner</label>
-                  <input type="text" id="cognome" pInputText formControlName="cognome">
-                </div>
-              </div>
-
-              <div class="p-fluid p-formgroup grid mb-3">
-                <div class="p-field col">
-                  <label for="email">Email Owner</label>
-                  <input type="text" id="email" pInputText formControlName="email">
-                </div>
-
-                <div class="p-field col">
-                  <label for="cell">Cellulare Owner</label>
-                  <input type="text" id="cell" pInputText formControlName="cell">
-                </div>
-              </div>
-
-              <div class="p-fluid p-formgroup grid mb-3">
-                <div class="p-field col">
-                  <label for="dsUnit">DS Unite Owner</label>
-                  <input type="text" id="dsUnit" pInputText formControlName="dsUnit">
-                </div>
-              </div>
-
-            </form>
-          </div>
-        </div>
-      </p-fieldset>
-
-      <!-- BLOCCO RESCAN APPLICAZIONE -->
-      <p-fieldset legend="Rescam Applicazione" styleClass="mb-4" [toggleable]="true" *ngIf="isCaricato">
-        <div class="grid">
-          <div class="col-12 xl:col-12 lg:col-6">
-            <form [formGroup]="form">
-
-              <div class="p-fluid p-formgroup grid mb-3">
-                <div class="p-field col">
-                  <label for="nRescan">N° Rescan</label>
-                  <input type="text" id="nRescan" pInputText formControlName="nRescan">
-                </div>
-
-                <div class="p-field col">
-                  <label for="newOb">New Ob</label>
-                  <input type="text" id="newOb" pInputText formControlName="newOb">
-                </div>
-              </div>
-
-              <div class="p-fluid p-formgroup grid mb-3">
-                <div class="p-field col">
-                  <label for="py">PY</label>
-                  <input type="text" id="py" pInputText formControlName="py">
-                </div>
-
-                <div class="p-field col">
-                  <label for="ytd">YTD</label>
-                  <input type="text" id="ytd" pInputText formControlName="ytd">
-                </div>
-              </div>
-
-              <div class="p-fluid p-formgroup grid mb-3">
-                <div class="p-field col">
-                  <label for="afpe">AFPE</label>
-                  <input type="text" id="afpe" pInputText formControlName="afpe">
-                </div>
-
-                <div class="p-field col">
-                  <label for="yoyRolling">YOY Rolling</label>
-                  <input type="text" id="yoyRolling" pInputText formControlName="yoyRolling">
-                </div>
-              </div>
-
-              <div class="p-fluid p-formgroup grid mb-3">
-                <div class="p-field col">
-                  <label for="last_Rescan">Ultimo Rescan</label>
-                  <input type="text" id="last_Rescan" pInputText formControlName="last_Rescan">
-                </div>
-
-                <div class="p-field col">
-                  <label for="onGoing">OnGoing true/false</label>
-                  <input type="text" id="onGoing" pInputText formControlName="onGoing">
-                </div>
-              </div>
-
-              <div class="p-fluid p-formgroup grid mb-3">
-                <div class="p-field col">
-                  <label for="archive">Archivio</label>
-                  <input type="text" id="archive" pInputText formControlName="archive">
-                </div>
-
-                <div class="p-field col">
-                  <label for="rkd">RKD</label>
-                  <input type="text" id="rkd" pInputText formControlName="rkd">
-                </div>
-              </div>
-
-            </form>
-          </div>
-        </div>
-      </p-fieldset>
-
-      <ng-template pTemplate="footer">
-        <button pButton icon="pi pi-check" (click)="display=false; resetForm()" label="Chiudi" class="p-button-outlined" *ngIf="isCaricato"></button>
-      </ng-template>
-    </p-dialog>
-  </div>
+            <ng-template pTemplate="footer">
+                <button pButton icon="pi pi-check" (click)="display=false; resetForm()" label="Chiudi" class="p-button-outlined" *ngIf="isCaricato"></button>
+            </ng-template>
+        </p-dialog>
+    </div>
 </div>
 <p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>

@@ -15,6 +15,7 @@ import { AppOwner } from 'src/app/api/appowner';
 import { timer } from 'rxjs';
 import { UtenteService } from 'src/app/service/utenteservice';
 import { Utente } from 'src/app/api/utente';
+import { LogFileAppService } from 'src/app/service/logappservice';
 
 @Component({
   selector: 'app-dashboard',
@@ -58,7 +59,8 @@ export class DashboardComponent implements OnInit {
     private messageService: MessageService,
     private rescanService: RescanService,
     private utenteService: UtenteService,
-    public router: Router
+    public router: Router,
+    private logService: LogFileAppService
   ) { }
 
   ngOnInit(): void {
@@ -68,10 +70,6 @@ export class DashboardComponent implements OnInit {
     this._initForm();
     this._intervalloLoadingBar();
     this._controlloUtente();
-
-    
-
-    
   }
 
   _controlloUtente() {
@@ -106,7 +104,6 @@ export class DashboardComponent implements OnInit {
     this.applicazioneService.getApplicazioni().subscribe((apps) => {
       this.applicazioni = apps;
       this.appFiltrate = this.applicazioni;
-
     })
   }
 
@@ -257,12 +254,13 @@ export class DashboardComponent implements OnInit {
       this.utenteLoggato = utente;
       console.log(this.utenteLoggato);
       console.log(appData['idApplicazione']);
-      // JSON.stringify({idApplicazione: appData['idApplicazione'], idUtente: utente.idUtente})
+
       this.applicazioneService.modificaApplicazione(appData).subscribe((app: Applicazione) => {
-        // console.log(JSON.stringify({idApplicazione: appData, utente: utente.idUtente}));
+
         timer(2000).toPromise().then(() => {
           this.display = false;
           this._getApplicazioni();
+          window.location.reload();
         })
       });
     });

@@ -37,6 +37,7 @@ import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {ConfirmationService, MessageService} from 'primeng/api';
 import {ToastModule} from 'primeng/toast';
 import { LogFileAppService } from './service/logappservice';
+import { RegistrazioneComponent } from './pages/registrazione/registrazione.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { LogFileAppService } from './service/logappservice';
     AppFooterComponent,
     LogoutComponent,
     AppEliminateComponent,
-    UtentiComponent
+    UtentiComponent,
+    RegistrazioneComponent
   ],
   imports: [
     BrowserModule,

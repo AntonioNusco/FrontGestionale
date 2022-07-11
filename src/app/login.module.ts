@@ -5,12 +5,11 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './pages/login/login.component';
+import { RegistrazioneComponent } from './pages/registrazione/registrazione.component';
 
 const routes: Routes = [
-  {
-    path: 'login',
-    component: LoginComponent
-  }
+  { path: 'login', component: LoginComponent },
+  { path: 'registrazione', component: RegistrazioneComponent}
 ];
 
 @NgModule({
