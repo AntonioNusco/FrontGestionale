@@ -23,7 +23,7 @@ export class UtenteService {
   }
 
   updateRuolo(userId: string): Observable<Utente> {
-    return this.http.put<Utente>(`http://localhost:8080/Gestionale/api/utente/updaterole/${userId}`, userId)
+    return this.http.put<Utente>(`http://localhost:8080/progettogestionale/utenterest/rendimodificatore/${userId}`, userId)
   }
 
   aggiungiUtente(userForm): Observable<Utente> {

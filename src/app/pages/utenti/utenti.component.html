@@ -1,25 +1,25 @@
 <p-toast></p-toast>
 
 <div class="grid">
-  <div class="col-12 xl:col-12">
-    <div class="card">
-      <div>
+    <div class="col-12 xl:col-12">
+        <div class="card">
+            <div>
 
-        <div class="grid">
-          <div class="col-4 xl:col-4"></div>
+                <div class="grid">
+                    <div class="col-4 xl:col-4"></div>
 
-          <div class="col-4 xl:col-4">
-            <h5 class="text-center">Utenti</h5>
-          </div>
+                    <div class="col-4 xl:col-4">
+                        <h5 class="text-center">Utenti</h5>
+                    </div>
 
-          <div class="col-4 xl:col-4">
-            <button pButton pRipple icon="pi pi-plus" type="button" label="Aggiungi Utente" class="p-button-success custom-btn" *ngIf="isUtentiCaricati" (click)="addClick()"></button>
-          </div>
-        </div>
+                    <div class="col-4 xl:col-4">
+                        <button pButton pRipple icon="pi pi-plus" type="button" label="Aggiungi Utente" class="p-button-success custom-btn" *ngIf="isUtentiCaricati" (click)="addClick()"></button>
+                    </div>
+                </div>
 
-        <p-progressBar [value]="caricamentoProgBar" *ngIf="!isUtentiCaricati"></p-progressBar>
+                <p-progressBar [value]="caricamentoProgBar" *ngIf="!isUtentiCaricati"></p-progressBar>
 
-        <!-- <div class="grid" *ngIf="isUtentiCaricati">
+                <!-- <div class="grid" *ngIf="isUtentiCaricati">
           <div class="col-6 xl:col-6">
             <p-autoComplete class="p-fluid" placeholder="Filtra per nome" [(ngModel)]="appSelezionate" [suggestions]="appFiltrate" (completeMethod)="filtraggioNomeApp($event)" (onClear)="resetFiltro()" field="nome_App"></p-autoComplete>
           </div>
@@ -29,93 +29,93 @@
           </div>
         </div> -->
 
-      </div>
-      <p-table [value]="utenti" [paginator]="true" [rows]="7" responsiveLayout="scroll" *ngIf="isUtentiCaricati">
-        <ng-template pTemplate="header">
-          <tr>
-            <th>Nome</th>
-            <th>Cognome</th>
-            <th>Email</th>
-            <th>Modificatore</th>
-            <th></th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-utente>
-          <tr>
-            <td>{{ utente.nome }}</td>
-            <td>{{ utente.cognome }}</td>
-            <td>{{ utente.email }}</td>
-            <td>{{ utente.ruolo }}</td>
-            <td>
-              <!-- <button pButton pRipple type="button" icon="pi pi-search" class="p-button p-component p-button-text p-button-icon-only" (click)="onSubmit(); getUserId(utente.idUtente)"></button> -->
-              <!-- <button pButton pRipple type="button" icon="pi pi-trash" class="p-button p-component p-button-text p-button-icon-only ml-4" (click)="deleteApp(appFiltrata.idApplicazione)"></button> -->
-              <button pButton pRipple type="button" label="Rendi Modificatore" class="p-button-success p-button-text" (click)="modificaRuolo(utente.idUtente)"></button>
-            </td>
-          </tr>
-        </ng-template>
-      </p-table>
+            </div>
+            <p-table [value]="utenti" [paginator]="true" [rows]="7" responsiveLayout="scroll" *ngIf="isUtentiCaricati">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Nome</th>
+                        <th>Cognome</th>
+                        <th>Email</th>
+                        <th>Modificatore</th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-utente>
+                    <tr>
+                        <td>{{ utente.nome }}</td>
+                        <td>{{ utente.cognome }}</td>
+                        <td>{{ utente.email }}</td>
+                        <td>{{ utente.ruolo }}</td>
+                        <td>
+                            <!-- <button pButton pRipple type="button" icon="pi pi-search" class="p-button p-component p-button-text p-button-icon-only" (click)="onSubmit(); getUserId(utente.idUtente)"></button> -->
+                            <!-- <button pButton pRipple type="button" icon="pi pi-trash" class="p-button p-component p-button-text p-button-icon-only ml-4" (click)="deleteApp(appFiltrata.idApplicazione)"></button> -->
+                            <button pButton pRipple type="button" [label]='utente.ruolo ? "Rendi Modificatore" : "Rendi Visualizzatore"' class="p-button-success p-button-text" (click)="modificaRuolo(utente.idUtente)"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
     </div>
-  </div>
 
-  <div class="col-12 xl:col-12 lg:col-12">
-    <p-dialog [header]='isCaricato ? "Dettagli Applicazione" : ""' [(visible)]="display" modal="modal" showEffect="fade" [style]="{width: '70vw'}">
+    <div class="col-12 xl:col-12 lg:col-12">
+        <p-dialog [header]='isCaricato ? "Dettagli Applicazione" : ""' [(visible)]="display" modal="modal" showEffect="fade" [style]="{width: '70vw'}">
 
-      <div class="grid">
-        <div class="col-4 xl:col-4"></div>
+            <div class="grid">
+                <div class="col-4 xl:col-4"></div>
 
-        <div class="col-4 xl:col-4">
-          <button pButton pRipple icon="pi pi-plus" type="button" [label]="editMode ? 'Modifica Utente' : 'Aggiungi Utente'" class="p-button-success" *ngIf="isCaricato" (click)="addUtente()" [style]="{width: '100%'}"></button>
-        </div>
-
-        <div class="col-4 xl:col-4"></div>
-      </div>
-
-      <p-progressSpinner animationDuration=".5s" *ngIf="!isCaricato" class="spinner" [style]="{width: '50px', height: '50px'}"></p-progressSpinner>
-      <!-- BLOCCO ANAGRAFICA APPLICAZIONE -->
-
-      <p-fieldset legend="Anagrafica Utente" styleClass="mb-4" [toggleable]="true" *ngIf="isCaricato">
-        <div class="grid">
-          <div class="col-12 xl:col-12 lg:col-6">
-            <form [formGroup]="form" enctype="multipart/form-data">
-
-              <div class="p-fluid p-formgroup grid mb-3">
-                <div class="p-field col">
-                  <label for="nome">Nome Utente</label>
-                  <input type="text" id="nome" pInputText formControlName="nome">
+                <div class="col-4 xl:col-4">
+                    <button pButton pRipple icon="pi pi-plus" type="button" [label]="editMode ? 'Modifica Utente' : 'Aggiungi Utente'" class="p-button-success" *ngIf="isCaricato" (click)="addUtente()" [style]="{width: '100%'}"></button>
                 </div>
 
-                <div class="p-field col">
-                  <label for="cognome">Cognome Utente</label>
-                  <input type="text" id="cognome" pInputText formControlName="cognome">
-                </div>
-              </div>
+                <div class="col-4 xl:col-4"></div>
+            </div>
 
-              <div class="p-fluid p-formgroup grid mb-3">
-                <div class="p-field col">
-                  <label for="email">Email Utente</label>
-                  <input type="text" id="email" pInputText formControlName="email">
-                </div>
+            <p-progressSpinner animationDuration=".5s" *ngIf="!isCaricato" class="spinner" [style]="{width: '50px', height: '50px'}"></p-progressSpinner>
+            <!-- BLOCCO ANAGRAFICA APPLICAZIONE -->
 
-                <div class="p-field col">
-                  <label for="ruolo">Modificatore true/false</label>
-                  <input type="text" id="ruolo" pInputText formControlName="ruolo">
-                </div>
-              </div>
+            <p-fieldset legend="Anagrafica Utente" styleClass="mb-4" [toggleable]="true" *ngIf="isCaricato">
+                <div class="grid">
+                    <div class="col-12 xl:col-12 lg:col-6">
+                        <form [formGroup]="form" enctype="multipart/form-data">
 
-              <div class="p-fluid p-formgroup grid mb-3">
-                <div class="p-field col">
-                  <label for="password">Password Utente</label>
-                  <input type="text" id="password" pInputText formControlName="password">
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-      </p-fieldset>
+                            <div class="p-fluid p-formgroup grid mb-3">
+                                <div class="p-field col">
+                                    <label for="nome">Nome Utente</label>
+                                    <input type="text" id="nome" pInputText formControlName="nome">
+                                </div>
 
-      <ng-template pTemplate="footer">
-        <button pButton icon="pi pi-check" (click)="display=false; resetForm()" label="Chiudi" class="p-button-outlined" *ngIf="isCaricato"></button>
-      </ng-template>
-    </p-dialog>
-  </div>
+                                <div class="p-field col">
+                                    <label for="cognome">Cognome Utente</label>
+                                    <input type="text" id="cognome" pInputText formControlName="cognome">
+                                </div>
+                            </div>
+
+                            <div class="p-fluid p-formgroup grid mb-3">
+                                <div class="p-field col">
+                                    <label for="email">Email Utente</label>
+                                    <input type="text" id="email" pInputText formControlName="email">
+                                </div>
+
+                                <div class="p-field col">
+                                    <label for="ruolo">Modificatore true/false</label>
+                                    <input type="text" id="ruolo" pInputText formControlName="ruolo">
+                                </div>
+                            </div>
+
+                            <div class="p-fluid p-formgroup grid mb-3">
+                                <div class="p-field col">
+                                    <label for="password">Password Utente</label>
+                                    <input type="text" id="password" pInputText formControlName="password">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </p-fieldset>
+
+            <ng-template pTemplate="footer">
+                <button pButton icon="pi pi-check" (click)="display=false; resetForm()" label="Chiudi" class="p-button-outlined" *ngIf="isCaricato"></button>
+            </ng-template>
+        </p-dialog>
+    </div>
 </div>
