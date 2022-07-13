@@ -408,19 +408,66 @@
                     <div class="col-12 xl:col-12 lg:col-6">
                         <form [formGroup]="form">
 
-                            <div class="p-fluid p-formgroup grid mb-3">
-                                <div class="p-field col">
-                                    <label for="nome">Nome Owner</label>
-                                    <input type="text" id="nome" pInputText formControlName="nome">
-                                </div>
+                          <div class="p-fluid p-formgroup grid mb-3">
+                            <div class="p-field col">
+                              <label for="idOwners">AppOwner</label>
+                              <!-- <p-dropdown id="idOwners" formControlName="idOwners" [options]="appOwners" [(ngModel)]="selectedOwner" optionLabel="nomeCognomeOwner" [filter]="true" filterBy="nomeCognomeOwner" [showClear]="true" placeholder="Seleziona AppOwner" (onChange)="onSelect($event)">
+                                <ng-template pTemplate="selectedOwner">
+                                    <div *ngIf="selectedOwner">
+                                        <div>{{selectedOwner.nome}} {{selectedOwner.cognome}}</div>
+                                    </div>
+                                </ng-template>
+                                <ng-template let-owner pTemplate="owner">
+                                    <div>
+                                        <div>{{owner.nome}} {{owner.cognome}}</div>
+                                    </div>
+                                </ng-template>
+                              </p-dropdown> -->
 
-                                <div class="p-field col">
-                                    <label for="cognome">Cognome Owner</label>
-                                    <input type="text" id="cognome" pInputText formControlName="cognome">
-                                </div>
+                              <p-listbox id="idOwners" formControlName="idOwners" (onClick)="selezioneOwner($event)" [options]="appOwners" [(ngModel)]="selectedOwner" [metaKeySelection]="false" [checkbox]="true" [filter]="true" optionLabel="nome" [listStyle]="{'max-height':'250px'}">
+                                <ng-template let-owner pTemplate="item">
+                                    <div class="country-item">
+                                        <div>{{owner.nome}} {{owner.cognome}}</div>
+                                    </div>
+                                </ng-template>
+                              </p-listbox>
+
+                              <button pButton pRipple type="button" label="Aggiungi" class="p-button-outlined p-button-success"></button>
                             </div>
 
+                            <!-- <div class="p-field col-2">
+                              <label style="color: white;">o</label>
+
+                            </div> -->
+                          </div>
+
                             <div class="p-fluid p-formgroup grid mb-3">
+                                <div class="p-field col">
+                                  <p-table [value]="appOwners" responsiveLayout="scroll">
+                                    <ng-template pTemplate="header">
+                                        <tr>
+                                            <th>Nome</th>
+                                            <th>Cognome</th>
+                                            <th>Email</th>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-appOwner>
+                                        <tr>
+                                            <td>{{appOwner.code}}</td>
+                                            <td>{{appOwner.name}}</td>
+                                            <td>{{appOwner.email}}</td>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+                                </div>
+
+                                <!-- <div class="p-field col">
+                                    <label for="cognome">Cognome Owner</label>
+                                    <input type="text" id="cognome" pInputText formControlName="cognome">
+                                </div> -->
+                            </div>
+
+                            <!-- <div class="p-fluid p-formgroup grid mb-3">
                                 <div class="p-field col">
                                     <label for="email">Email Owner</label>
                                     <input type="text" id="email" pInputText formControlName="email">
@@ -437,7 +484,7 @@
                                     <label for="dsUnit">DS Unite Owner</label>
                                     <input type="text" id="dsUnit" pInputText formControlName="dsUnit">
                                 </div>
-                            </div>
+                            </div> -->
 
                         </form>
                     </div>

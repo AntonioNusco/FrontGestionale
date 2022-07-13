@@ -7,4 +7,5 @@ export interface AppOwner {
   cell?: string;
   dsUnit?: string;
   applicazioni?: Applicazione;
+  nomeCognomeOwner?: string;
 }

@@ -44,9 +44,14 @@ export class DashboardComponent implements OnInit {
   isApplicazioniCaricate = false;
   caricamentoProgBar: number = 0;
 
-  ownerSingolo: AppOwner;
+  appOwners: AppOwner[];
+
+  selectedOwner: AppOwner;
+  idAppOwner: number;
 
   utenteLoggato: Utente;
+
+  countries: any[] = [];
 
   constructor(
     private updateService: UpdateService,
@@ -70,7 +75,34 @@ export class DashboardComponent implements OnInit {
     this._initForm();
     this._intervalloLoadingBar();
     this._controlloUtente();
+    this._getOwners();
   }
+
+  _getOwners() {
+    this.appownerService.getOwners().subscribe((appOwners: AppOwner[]) => {
+      this.appOwners = appOwners;
+
+    })
+  }
+
+  onSelect(event) {
+    if(event.value !== null) {
+      this.appownerService.getOwner(event.value['idAppOwner']).subscribe(owner => {
+        owner.nomeCognomeOwner = owner.nome + " " + owner.cognome
+        this.idAppOwner = owner.idAppOwner;
+        // console.log(this.idAppOwner);
+        for (let item of this.appOwners) {
+          let ownerAppoggio = this.appOwners.find(u => u.idAppOwner === item.idAppOwner);
+          item.nomeCognomeOwner = ownerAppoggio.nome + " " + ownerAppoggio.cognome;
+          // console.log(item.nomeCognomeOwner);
+        }
+      })
+      console.log(this.selectedOwner);
+    }
+
+  }
+
+
 
   _controlloUtente() {
     if (sessionStorage.length > 0) {
@@ -85,19 +117,19 @@ export class DashboardComponent implements OnInit {
 
       window.alert('Accesso negato, è richiesto l\'accesso!');
       this.router.navigate(['login']);
-    
+
     }
   }
 
   private _intervalloLoadingBar() {
     let intervallo = setInterval(() => {
-      this.caricamentoProgBar = this.caricamentoProgBar + Math.floor(Math.random() * 65) + 1;
+      this.caricamentoProgBar = this.caricamentoProgBar + Math.floor(Math.random() * 50) + 1;
       if (this.caricamentoProgBar >= 100) {
         this.caricamentoProgBar = 100;
         this.isApplicazioniCaricate = true;
         clearInterval(intervallo);
        }
-    }, 1055);
+    }, 800);
   }
 
   private _getApplicazioni() {
@@ -142,6 +174,12 @@ export class DashboardComponent implements OnInit {
 
   resetFiltro() {
     this.appFiltrate = this.applicazioni;
+  }
+
+  selezioneOwner(event) {
+    this.idAppOwner = event.value['idAppOwner'];
+    // console.log(this.selectedOwner.idAppOwner);
+
   }
 
   private _initForm() {
@@ -204,6 +242,8 @@ export class DashboardComponent implements OnInit {
       rkd: [''],
 
       idUtente: [''],
+
+      idOwners: [this.idAppOwner]
     })
   }
 
@@ -237,23 +277,25 @@ export class DashboardComponent implements OnInit {
 
     Object.keys(this.appForm).map((key) => {
       if (this.appForm[key].value != "") {
+        if(appFormData['idOwners'] == null || appFormData['idOwners'] == "") {
+          appFormData['idOwners'] = this.appForm['idOwners'].setValue(this.idAppOwner);
+        }
         appFormData[key] = this.appForm[key].value;
       }
     })
 
     if(this.editMode) {
       this._updateApplicazione(appFormData);
-      console.log("Dovrei modificare l'applicazione")
     } else {
       this._aggiungiApplicazione(appFormData);
+      // console.log(appFormData['idOwners']);
+      console.log(JSON.parse(JSON.stringify(appFormData)));
     }
   }
 
   _updateApplicazione(appData) {
     this.utenteService.getUtente(sessionStorage.getItem("Utente")).subscribe(utente => {
       this.utenteLoggato = utente;
-      console.log(this.utenteLoggato);
-      console.log(appData['idApplicazione']);
 
       this.applicazioneService.modificaApplicazione(appData).subscribe((app: Applicazione) => {
 
@@ -264,7 +306,7 @@ export class DashboardComponent implements OnInit {
         })
       });
     });
-    
+
   }
 
   _aggiungiApplicazione(appData) {
@@ -278,7 +320,7 @@ export class DashboardComponent implements OnInit {
         })
       });
     })
-    
+
   }
 
   addClick() {
@@ -291,7 +333,6 @@ export class DashboardComponent implements OnInit {
   getAppId(idApplicazione: string) {
     this.currentAppId = idApplicazione;
     this.editMode = true;
-    console.log(this.currentAppId);
 
     this._editMode();
   }
@@ -301,7 +342,7 @@ export class DashboardComponent implements OnInit {
 
     if (this.editMode) {
       this.applicazioneService.getApplicazione(this.currentAppId).subscribe(app => {
-        console.log(app);
+        // console.log(app);
 
         this.appForm['idApplicazione'].setValue(app.idApplicazione);
         this.appForm['nome_App'].setValue(app.nome_App);
@@ -354,18 +395,19 @@ export class DashboardComponent implements OnInit {
 
         // DATI OWNER APPLICAZIONE
         let ownerApp = app.idOwners;
-        this.appownerService.getOwner(ownerApp).subscribe(appOwner => {
-          this.appForm['nome'].setValue(appOwner.nome);
-          this.appForm['cognome'].setValue(appOwner.cognome);
-          this.appForm['email'].setValue(appOwner.email);
-          this.appForm['cell'].setValue(appOwner.cell);
-          this.appForm['dsUnit'].setValue(appOwner.dsUnit);
-        })
+        // console.log(this.appForm['idOwners'].setValue(this.idAppOwner));
+        this.appForm['idOwners'].setValue(this.idAppOwner);
+        // this.appownerService.getOwner(ownerApp).subscribe(appOwner => {
+        //   this.appForm['nome'].setValue(appOwner.nome);
+        //   this.appForm['cognome'].setValue(appOwner.cognome);
+        //   this.appForm['email'].setValue(appOwner.email);
+        //   this.appForm['cell'].setValue(appOwner.cell);
+        //   this.appForm['dsUnit'].setValue(appOwner.dsUnit);
+        // })
 
         // DATI RESCAN APPLICAZIONE
         let rescanApp = app.idRescans;
         this.rescanService.getRescans(rescanApp).subscribe(rescan => {
-          console.log(rescan);
           this.appForm['nRescan'].setValue(rescan.nRescan);
           this.appForm['newOb'].setValue(rescan.newOb);
           this.appForm['py'].setValue(rescan.py);
@@ -449,6 +491,8 @@ export class DashboardComponent implements OnInit {
     this.appForm['email'].setValue("");
     this.appForm['cell'].setValue("");
     this.appForm['dsUnit'].setValue("");
+
+    this.appForm['idOwners'].setValue("");
 
   }
 

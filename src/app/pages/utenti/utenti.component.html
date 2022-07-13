@@ -45,11 +45,11 @@
                         <td>{{ utente.nome }}</td>
                         <td>{{ utente.cognome }}</td>
                         <td>{{ utente.email }}</td>
-                        <td>{{ utente.ruolo }}</td>
+                        <td><i [ngClass]="utente.ruolo ? 'pi pi-check ruolo-true p-2' : 'pi pi-times ruolo-false p-2'"></i></td>
                         <td>
                             <!-- <button pButton pRipple type="button" icon="pi pi-search" class="p-button p-component p-button-text p-button-icon-only" (click)="onSubmit(); getUserId(utente.idUtente)"></button> -->
-                            <!-- <button pButton pRipple type="button" icon="pi pi-trash" class="p-button p-component p-button-text p-button-icon-only ml-4" (click)="deleteApp(appFiltrata.idApplicazione)"></button> -->
-                            <button pButton pRipple type="button" [label]='utente.ruolo ? "Rendi Modificatore" : "Rendi Visualizzatore"' class="p-button-success p-button-text" (click)="modificaRuolo(utente.idUtente)"></button>
+                            <!-- <button pButton pRipple type="button" icon="pi pi-trash" class="p-button p-component p-button-text p-button-icon-only ml-4" (click)="deleteApp(appFiltrata.idApplicazione)"></button>        (click)="utente.ruolo ? modificaRuolo(utente.idUtente) : downgradeRuolo(utente.idUtente)"    -->
+                            <button pButton pRipple type="button" [label]='utente.ruolo ? "Rendi Visualizzatore" : "Rendi Modificatore"' class="p-button-success p-button-text" (click)="modificaRuolo(utente.idUtente)"></button>
                         </td>
                     </tr>
                 </ng-template>

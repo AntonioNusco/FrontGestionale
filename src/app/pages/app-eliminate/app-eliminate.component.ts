@@ -30,7 +30,7 @@ export class AppEliminateComponent implements OnInit {
         this.isApplicazioniCaricate = true;
         clearInterval(intervallo);
        }
-    }, 1055);
+    }, 800);
   }
 
   private _getApplicazioniEliminate() {

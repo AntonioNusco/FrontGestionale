@@ -41,7 +41,7 @@ export class UtentiComponent implements OnInit {
         this.isUtentiCaricati = true;
         clearInterval(intervallo);
        }
-    }, 1055);
+    }, 800);
   }
 
   private _getUtenti() {
@@ -102,6 +102,14 @@ export class UtentiComponent implements OnInit {
     this.currentAppId = idUtente;
 
     this.utenteService.updateRuolo(idUtente).subscribe(() => {
+      this._getUtenti();
+    })
+  }
+
+  downgradeRuolo(idUtente: string) {
+    this.currentAppId = idUtente;
+
+    this.utenteService.downgradeRuolo(idUtente).subscribe(() => {
       this._getUtenti();
     })
   }

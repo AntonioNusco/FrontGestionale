@@ -7,4 +7,6 @@ export interface LogFileApp {
     idApplicazione?: number;
     idUtente?: string;
     nome_App?: string;
+    nomeUtente?: string;
+    cognomeUtente?: string;
 }

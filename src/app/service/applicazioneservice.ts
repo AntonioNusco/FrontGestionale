@@ -31,7 +31,7 @@ getApplicazione(appId: string): Observable<Applicazione> {
 }
 
 aggiungiApplicazione(appForm): Observable<Applicazione> {
-  // console.log(JSON.parse(JSON.stringify(appForm)))
+  // localStorage.setItem("JSON APP", JSON.parse(JSON.stringify(appForm)))
   return this.http.post<Applicazione>(`http://localhost:8080/progettogestionale/applicazionerest/save`, appForm , this.headers);
 }
 

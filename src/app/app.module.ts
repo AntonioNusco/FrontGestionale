@@ -38,6 +38,8 @@ import {ConfirmationService, MessageService} from 'primeng/api';
 import {ToastModule} from 'primeng/toast';
 import { LogFileAppService } from './service/logappservice';
 import { RegistrazioneComponent } from './pages/registrazione/registrazione.component';
+import {DropdownModule} from 'primeng/dropdown';
+import {ListboxModule} from 'primeng/listbox';
 
 @NgModule({
   declarations: [
@@ -71,7 +73,9 @@ import { RegistrazioneComponent } from './pages/registrazione/registrazione.comp
     MenubarModule,
     UsersModule,
     ConfirmDialogModule,
-    ToastModule
+    ToastModule,
+    DropdownModule,
+    ListboxModule
   ],
   providers: [
     // { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

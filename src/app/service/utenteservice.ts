@@ -26,6 +26,10 @@ export class UtenteService {
     return this.http.put<Utente>(`http://localhost:8080/progettogestionale/utenterest/rendimodificatore/${userId}`, userId)
   }
 
+  downgradeRuolo(userId: string): Observable<Utente> {
+    return this.http.put<Utente>(`http://localhost:8080/progettogestionale/utenterest/rendivisualizzatore/${userId}`, userId)
+  }
+
   aggiungiUtente(userForm): Observable<Utente> {
     // return this.http.post<Utente>(`http://localhost:8080/Gestionale/api/utente/signup`, userForm, this.headers)
     return this.http.post<Utente>(`http://localhost:8080/progettogestionale/utenterest/save`, userForm, this.headers)

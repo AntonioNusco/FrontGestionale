@@ -31,10 +31,10 @@ import { map, Observable } from 'rxjs';
                         <th>App</th>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-log >
+                <ng-template pTemplate="body" let-log>
                     <tr>
                         <td>{{log.data[2]}}/{{log.data[1]}}/{{log.data[0]}}</td>
-                        <td>{{log.idUtente}}</td>
+                        <td>{{log.nomeUtente}} {{log.cognomeUtente}}</td>
                         <td>{{log.nome_App}}</td>
                     </tr>
                 </ng-template>
@@ -81,14 +81,27 @@ export class AppMenuComponent implements OnInit {
         this.logAppService.getLogs().subscribe(logs => {
             this.logsApp = logs.slice().reverse();
 
-            // this.logsApp.forEach(data => {
-            //     this.utenti.push(this.utenteService.getUtente(data.idUtente).subscribe(utente => {
-            //         this.utentiAppoggio.push(utente);
-            //     }));
-            // })
+            this.utenteService.getUtenti().subscribe(utente => {
+
+              this.utenti = utente;
+
+              this._getNomeCognomeUtente();
+
+            })
         });
 
-        
+
+    }
+
+    _getNomeCognomeUtente() {
+      for(let item of this.logsApp) {
+
+        let utenteAppoggio = this.utenti.find( u  => u.idUtente === item.idUtente );
+
+        item.nomeUtente = utenteAppoggio.nome;
+        item.cognomeUtente = utenteAppoggio.cognome;
+
+      }
     }
 
     onKeydown(event: KeyboardEvent) {
