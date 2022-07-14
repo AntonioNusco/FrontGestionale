@@ -51,6 +51,8 @@ export class DashboardComponent implements OnInit {
 
   utenteLoggato: Utente;
 
+  aggiuntaOwner: boolean;
+
   countries: any[] = [];
 
   constructor(
@@ -243,7 +245,7 @@ export class DashboardComponent implements OnInit {
 
       idUtente: [''],
 
-      idOwners: [this.idAppOwner]
+      intero: [this.idAppOwner]
     })
   }
 
@@ -265,6 +267,10 @@ export class DashboardComponent implements OnInit {
 
   }
 
+  apriDialogAggiunta() {
+    this.aggiuntaOwner = true;
+  }
+
   addOrModify() {
     if (this.form.invalid) return;
 
@@ -277,8 +283,8 @@ export class DashboardComponent implements OnInit {
 
     Object.keys(this.appForm).map((key) => {
       if (this.appForm[key].value != "") {
-        if(appFormData['idOwners'] == null || appFormData['idOwners'] == "") {
-          appFormData['idOwners'] = this.appForm['idOwners'].setValue(this.idAppOwner);
+        if(appFormData['intero'] == null || appFormData['intero'] == "") {
+          appFormData['intero'] = this.appForm['intero'].setValue(this.idAppOwner);
         }
         appFormData[key] = this.appForm[key].value;
       }
@@ -396,7 +402,7 @@ export class DashboardComponent implements OnInit {
         // DATI OWNER APPLICAZIONE
         let ownerApp = app.idOwners;
         // console.log(this.appForm['idOwners'].setValue(this.idAppOwner));
-        this.appForm['idOwners'].setValue(this.idAppOwner);
+        this.appForm['intero'].setValue(this.idAppOwner);
         // this.appownerService.getOwner(ownerApp).subscribe(appOwner => {
         //   this.appForm['nome'].setValue(appOwner.nome);
         //   this.appForm['cognome'].setValue(appOwner.cognome);
@@ -492,7 +498,7 @@ export class DashboardComponent implements OnInit {
     this.appForm['cell'].setValue("");
     this.appForm['dsUnit'].setValue("");
 
-    this.appForm['idOwners'].setValue("");
+    this.appForm['intero'].setValue("");
 
   }
 

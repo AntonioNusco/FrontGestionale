@@ -40,6 +40,7 @@ import { LogFileAppService } from './service/logappservice';
 import { RegistrazioneComponent } from './pages/registrazione/registrazione.component';
 import {DropdownModule} from 'primeng/dropdown';
 import {ListboxModule} from 'primeng/listbox';
+import {DynamicDialogModule} from 'primeng/dynamicdialog';
 
 @NgModule({
   declarations: [
@@ -75,7 +76,8 @@ import {ListboxModule} from 'primeng/listbox';
     ConfirmDialogModule,
     ToastModule,
     DropdownModule,
-    ListboxModule
+    ListboxModule,
+    DynamicDialogModule
   ],
   providers: [
     // { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
