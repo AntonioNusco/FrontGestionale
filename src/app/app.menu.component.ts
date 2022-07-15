@@ -23,6 +23,9 @@ import { map, Observable } from 'rxjs';
 
         <div class="container-log" style="margin-top: 2.5rem;" *ngIf="modificatore">
         <!-- <div class="container-log" style="margin-top: 2.5rem;"> -->
+          <div class="text-center">
+            <h4>Log Recenti</h4>
+          </div>
             <p-table [value]="logsApp" [scrollable]="true" scrollHeight="500px" responsiveLayout="scroll">
                 <ng-template pTemplate="header">
                     <tr>
@@ -69,10 +72,10 @@ export class AppMenuComponent implements OnInit {
             this.model = [
                 {
                     items: [
-                        {label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['dashboard']},
-                        {label: 'App Eliminate', icon: 'pi pi-fw pi-home', routerLink: ['appeliminate'], visible: this.modificatore},
-                        {label: 'Utenti', icon: 'pi pi-fw pi-home', routerLink: ['utenti'], visible: this.modificatore},
-                        {label: 'Logout', icon: 'pi pi-fw pi-home', routerLink: ['logout']},
+                        {label: 'Dashboard', icon: 'pi pi-home', routerLink: ['dashboard']},
+                        {label: 'App Eliminate', icon: 'pi pi-trash', routerLink: ['appeliminate'], visible: this.modificatore},
+                        {label: 'Utenti', icon: 'pi pi-user', routerLink: ['utenti'], visible: this.modificatore},
+                        {label: 'Logout', icon: 'pi pi-sign-out', routerLink: ['logout']},
                     ]
                 }
             ];

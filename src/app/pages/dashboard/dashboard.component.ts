@@ -415,7 +415,7 @@ export class DashboardComponent implements OnInit {
   }
 
   private _editMode() {
-    setTimeout(() => this.isCaricato = true, 1000);
+    setTimeout(() => this.isCaricato = true, 800);
 
     if (this.editMode) {
       this.applicazioneService.getApplicazione(this.currentAppId).subscribe(app => {
