@@ -17,7 +17,6 @@ export class ApplicazioneService {
 constructor(private http: HttpClient) {}
 
 getApplicazioni(): Observable<Applicazione[]> {
-  // return this.http.get<Applicazione[]>('http://localhost:8080/Gestionale/api/applicazione/lista');
   return this.http.get<Applicazione[]>('http://localhost:8080/progettogestionale/applicazionerest/getallapp');
 }
 
@@ -26,17 +25,17 @@ getApplicazioniEliminate(): Observable<Applicazione[]> {
 }
 
 getApplicazione(appId: string): Observable<Applicazione> {
-  // return this.http.get<Applicazione>(`http://localhost:8080/Gestionale/api/applicazione/${appId}`);
   return this.http.get<Applicazione>(`http://localhost:8080/progettogestionale/applicazionerest/getbyid/${appId}`);
 }
 
 aggiungiApplicazione(appForm): Observable<Applicazione> {
-  // localStorage.setItem("JSON APP", JSON.parse(JSON.stringify(appForm)))
   return this.http.post<Applicazione>(`http://localhost:8080/progettogestionale/applicazionerest/save`, appForm , this.headers);
 }
 
+aggiungiOwnerApplicazione(aggiuntaOwnerForm): Observable<Applicazione> {
+  return this.http.post<Applicazione>(`http://localhost:8080/progettogestionale/applicazionerest/save`, aggiuntaOwnerForm , this.headers);
+}
 modificaApplicazione(formModifica): Observable<Applicazione> {
-  // console.log(JSON.parse(JSON.stringify(appForm)))
   return this.http.post<Applicazione>(`http://localhost:8080/progettogestionale/applicazionerest/modificaapp`, formModifica , this.headers);
 }
 
@@ -46,6 +45,10 @@ rimuoviApplicazione(appId: string): Observable<any> {
 
 recuperaApplicazione(appId: string): Observable<any> {
   return this.http.put<any>(`http://localhost:8080/progettogestionale/applicazionerest/recuperoapp/${appId}`, appId);
+}
+
+eliminazioneOwner(idApp, idOwner) {
+  return this.http.delete(`http://localhost:8080/progettogestionale/applicazionerest/rimuoviowner/${idApp}/${idOwner}`);
 }
 
 }

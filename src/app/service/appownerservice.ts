@@ -16,4 +16,8 @@ getOwner(ownerId: number): Observable<AppOwner> {
   return this.http.get<AppOwner>(`http://localhost:8080/progettogestionale/appownerrest/getbyid/${ownerId}`);
 }
 
+aggiuntaOwner(ownerForm): Observable<AppOwner> {
+  return this.http.post<AppOwner>(`http://localhost:8080/progettogestionale/appownerrest/save`, ownerForm);
+}
+
 }

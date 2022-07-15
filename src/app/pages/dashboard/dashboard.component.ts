@@ -35,6 +35,7 @@ export class DashboardComponent implements OnInit {
   display: boolean;
 
   form!: FormGroup;
+  formOwner!: FormGroup;
   isSubmitted = false;
   editMode = false;
   addMode = false;
@@ -46,12 +47,15 @@ export class DashboardComponent implements OnInit {
 
   appOwners: AppOwner[];
 
+  appOwnersApplicazione: AppOwner[] = [];
+
   selectedOwner: AppOwner;
   idAppOwner: number;
 
   utenteLoggato: Utente;
 
   aggiuntaOwner: boolean;
+  visualizzaOwner: boolean = true;
 
   countries: any[] = [];
 
@@ -75,6 +79,7 @@ export class DashboardComponent implements OnInit {
     this.updateService.getUpdate().then(data => this.updates = data);
     this._getApplicazioni();
     this._initForm();
+    this._initFormOwner();
     this._intervalloLoadingBar();
     this._controlloUtente();
     this._getOwners();
@@ -180,8 +185,27 @@ export class DashboardComponent implements OnInit {
 
   selezioneOwner(event) {
     this.idAppOwner = event.value['idAppOwner'];
-    // console.log(this.selectedOwner.idAppOwner);
+  }
 
+  eliminaOwner(idOwner) {
+    let idApp = this.currentAppId;
+
+    this.applicazioneService.eliminazioneOwner(idApp, idOwner).subscribe(data => {
+      this.appOwnersApplicazione = [];
+      this.applicazioneService.getApplicazione(idApp).subscribe(app => {
+        this._editMode();
+      })
+    });
+  }
+
+  private _initFormOwner() {
+    this.formOwner = this.formBuilder.group({
+      nome: ['', Validators.required],
+      cognome: ['', Validators.required],
+      email: ['', Validators.required, Validators.email],
+      cell: [''],
+      dsUnit: ['']
+    })
   }
 
   private _initForm() {
@@ -253,33 +277,68 @@ export class DashboardComponent implements OnInit {
     return this.form.controls;
   }
 
+  get ownerForm(){
+    return this.formOwner.controls;
+  }
+
   onSubmit() {
     this.isSubmitted = true;
     this.display = true;
-
-    // if (this.form.invalid) return;
-
-    // const appFormData = new FormData();
-
-    // Object.keys(this.appForm).map((key) => {
-    //   appFormData.append(key, this.appForm[key].value);
-    // })
-
   }
 
   apriDialogAggiunta() {
     this.aggiuntaOwner = true;
+    this._initFormOwner();
+  }
+
+  creaAppOwner() {
+
+    console.log("Ho cliccato sul bottone di aggiunta Owner");
+
+    if (this.form.invalid) {
+      console.log("Campi nel form non validi")
+    };
+
+    const ownerFormData = {};
+
+    Object.keys(this.ownerForm).map((key) => {
+      if (this.ownerForm[key].value != "") {
+        ownerFormData[key] = this.ownerForm[key].value;
+        console.log(JSON.parse(JSON.stringify(ownerFormData)));
+      }
+    })
+
+    this._servizioAggiuntaOwner(ownerFormData);
+    // console.log(JSON.parse(JSON.stringify(ownerFormData)));
+
+  }
+
+  aggiuntaAppOwnerAllApplicazione() {
+    if (this.form.invalid) return;
+
+    const appFormData = {};
+
+    Object.keys(this.appForm).map((key) => {
+      if (this.appForm[key].value != "") {
+        if(appFormData['intero'] == null || appFormData['intero'] == "") {
+          appFormData['intero'] = this.appForm['intero'].setValue(this.idAppOwner);
+        }
+        appFormData[key] = this.appForm[key].value;
+      }
+    })
+
+    this.applicazioneService.aggiungiOwnerApplicazione(appFormData).subscribe(owner => {
+      this.appOwnersApplicazione = [];
+      this.applicazioneService.getApplicazione(this.currentAppId).subscribe(app => {
+        this._editMode();
+      })
+    })
   }
 
   addOrModify() {
     if (this.form.invalid) return;
 
-    // const appFormData = new FormData();
     const appFormData = {};
-
-    // Object.keys(this.appForm).map((key) => {
-    //   appFormData.append(key, this.appForm[key].value);
-    // });
 
     Object.keys(this.appForm).map((key) => {
       if (this.appForm[key].value != "") {
@@ -294,8 +353,6 @@ export class DashboardComponent implements OnInit {
       this._updateApplicazione(appFormData);
     } else {
       this._aggiungiApplicazione(appFormData);
-      // console.log(appFormData['idOwners']);
-      console.log(JSON.parse(JSON.stringify(appFormData)));
     }
   }
 
@@ -313,6 +370,20 @@ export class DashboardComponent implements OnInit {
       });
     });
 
+  }
+
+  _servizioAggiuntaOwner(ownerData) {
+    this.appownerService.aggiuntaOwner(ownerData).subscribe(owner => {
+
+      console.log("Sono nel servizio dell'aggiunta Owner");
+
+      timer(2000).toPromise().then(() => {
+        this.aggiuntaOwner = false;
+        this._getApplicazioni();
+        this._getOwners();
+      })
+
+    })
   }
 
   _aggiungiApplicazione(appData) {
@@ -400,16 +471,15 @@ export class DashboardComponent implements OnInit {
         // this.appForm['exist'].setValue(app.exist);
 
         // DATI OWNER APPLICAZIONE
-        let ownerApp = app.idOwners;
-        // console.log(this.appForm['idOwners'].setValue(this.idAppOwner));
+        let ownerApp: any[] = app.idOwners;
+
         this.appForm['intero'].setValue(this.idAppOwner);
-        // this.appownerService.getOwner(ownerApp).subscribe(appOwner => {
-        //   this.appForm['nome'].setValue(appOwner.nome);
-        //   this.appForm['cognome'].setValue(appOwner.cognome);
-        //   this.appForm['email'].setValue(appOwner.email);
-        //   this.appForm['cell'].setValue(appOwner.cell);
-        //   this.appForm['dsUnit'].setValue(appOwner.dsUnit);
-        // })
+
+        for (let item of ownerApp) {
+          this.appownerService.getOwner(item).subscribe(appOwner => {
+            this.appOwnersApplicazione.push(appOwner);
+          })
+        }
 
         // DATI RESCAN APPLICAZIONE
         let rescanApp = app.idRescans;
@@ -436,6 +506,18 @@ export class DashboardComponent implements OnInit {
       this._initForm();
 
     }
+  }
+
+  resetFormOwner() {
+    this.currentAppId = "";
+    this.isCaricato = false;
+    this.editMode = false;
+
+    this.ownerForm['nome'].setValue("");
+    this.ownerForm['cognome'].setValue("");
+    this.ownerForm['email'].setValue("");
+    this.ownerForm['cell'].setValue("");
+    this.ownerForm['dsUnit'].setValue("");
   }
 
   resetForm() {
@@ -499,6 +581,8 @@ export class DashboardComponent implements OnInit {
     this.appForm['dsUnit'].setValue("");
 
     this.appForm['intero'].setValue("");
+
+    this.appOwnersApplicazione = [];
 
   }
 

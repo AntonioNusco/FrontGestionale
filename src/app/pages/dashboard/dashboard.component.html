@@ -28,19 +28,6 @@
       </div>
     </div>
   </div>
-  <!-- <div class="col-12 lg:col-4 xl:col-4">
-      <div class="card mb-3">
-          <div class="flex justify-content-between mb-3">
-              <div>
-                  <span class="block text-500 font-medium mb-3">Messaggi</span>
-                  <div class="text-900 font-medium text-xl">30</div>
-              </div>
-              <div class="flex align-items-center justify-content-center bg-cyan-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
-                  <i class="pi pi-comments text-cyan-500 text-xl"></i>
-              </div>
-          </div>
-      </div>
-  </div> -->
 </div>
 
 <div class="grid">
@@ -109,32 +96,9 @@
     </div>
   </div>
 
-  <!-- <div class="col-12 xl:col-4">
-    <div class="card">
-      <h5 class="text-center">Update</h5>
-      <p-table [value]="updates" [paginator]="true" [rows]="7" responsiveLayout="scroll">
-        <ng-template pTemplate="header">
-          <tr>
-            <th>Autore</th>
-            <th>Azione</th>
-            <th>Data</th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-update>
-          <tr>
-            <td>{{ update.autore }}</td>
-            <td>{{ update.azione }}</td>
-            <td>{{ update.data }}</td>
-          </tr>
-        </ng-template>
-      </p-table>
-    </div>
-  </div> -->
-
   <div class="col-12 xl:col-12 lg:col-12">
-    <p-dialog [header]='isCaricato ? "Dettagli Applicazione" : ""' [(visible)]="display" modal="modal" showEffect="fade"
-      [style]="{width: '70vw'}">
-
+    <p-dialog [header]='isCaricato ? "Dettagli Applicazione" : ""' [(visible)]="display" [modal]="true" showEffect="fade"
+      [style]="{width: '70vw'}" [draggable]="false" [closable]="false">
       <div class="grid">
         <div class="col-4 xl:col-4"></div>
 
@@ -463,10 +427,9 @@
                     </div>
 
                     <div class="col-6">
-                      <button pButton pRipple type="button" label="Aggiungi"
-                      class="p-button-outlined p-button-success" style="width: 80%;"></button>
-
-
+                      <button pButton pRipple type="button" label="Aggiungi AppOwner"
+                      class="p-button-outlined p-button-success" style="width: 80%;"
+                      (click)="aggiuntaAppOwnerAllApplicazione()"></button>
                     </div>
 
                     <div class="col-6">
@@ -481,19 +444,25 @@
 
               <div class="p-fluid p-formgroup grid mb-3">
                 <div class="p-field col">
-                  <p-table [value]="appOwners" responsiveLayout="scroll">
+                  <p-table [value]="appOwnersApplicazione" responsiveLayout="scroll">
                     <ng-template pTemplate="header">
                       <tr>
                         <th>Nome</th>
                         <th>Cognome</th>
                         <th>Email</th>
+                        <th></th>
                       </tr>
                     </ng-template>
-                    <ng-template pTemplate="body" let-appOwner>
+                    <ng-template pTemplate="body" let-owner>
                       <tr>
-                        <td>{{appOwner.code}}</td>
-                        <td>{{appOwner.name}}</td>
-                        <td>{{appOwner.email}}</td>
+                        <td>{{owner.nome}}</td>
+                        <td>{{owner.cognome}}</td>
+                        <td>{{owner.email}}</td>
+                        <td>
+                          <button pButton pRipple type="button" icon="pi pi-trash"
+                          class="p-button p-component p-button-text p-button-icon-only ml-4"
+                          (click)="eliminaOwner(owner.idAppOwner);"></button>
+                        </td>
                       </tr>
                     </ng-template>
                   </p-table>
@@ -582,47 +551,54 @@
       </ng-template>
     </p-dialog>
 
-    <p-dialog header="Header" [(visible)]="aggiuntaOwner" [modal]="true" [style]="{width: '50vw'}" [draggable]="false"
+    <p-dialog header="Creazione AppOwner" [(visible)]="aggiuntaOwner" [modal]="true" [style]="{width: '50vw'}" [draggable]="false"
       [resizable]="false">
       <div class="grid">
         <div class="col-12 xl:col-12 lg:col-6">
-          <form [formGroup]="form">
+          <form [formGroup]="formOwner">
 
             <div class="p-fluid p-formgroup grid mb-3">
               <div class="p-field col">
-                <label for="jiraautomationActivation">Jira Automation Activation</label>
-                <input type="text" id="jiraautomationActivation" pInputText formControlName="jiraautomationActivation">
+                <label for="nome">Nome AppOwner</label>
+                <input type="text" id="nome" pInputText formControlName="nome">
               </div>
 
               <div class="p-field col">
-                <label for="automationStatus">Automation Status</label>
-                <input type="text" id="automationStatus" pInputText formControlName="automationStatus">
+                <label for="cognome">Cognome AppOwner</label>
+                <input type="text" id="cognome" pInputText formControlName="cognome">
               </div>
 
               <div class="p-field col">
-                <label for="automationEnablingDate">Automation Enabling Date</label>
-                <input type="text" id="automationEnablingDate" pInputText formControlName="automationEnablingDate">
+                <label for="email">Email AppOwner</label>
+                <input type="text" id="email" pInputText formControlName="email">
               </div>
             </div>
 
             <div class="p-fluid p-formgroup grid mb-3">
               <div class="p-field col">
-                <label for="automationStatus">Automation Status</label>
-                <input type="text" id="automationStatus" pInputText formControlName="automationStatus">
+                <label for="cell">Cellulare AppOwner</label>
+                <input type="text" id="cell" pInputText formControlName="cell">
               </div>
 
               <div class="p-field col">
-                <label for="automationEnablingDate">Automation Enabling Date</label>
-                <input type="text" id="automationEnablingDate" pInputText formControlName="automationEnablingDate">
+                <label for="dsUnit">DS Unit AppOwner</label>
+                <input type="text" id="dsUnit" pInputText formControlName="dsUnit">
               </div>
             </div>
+
+            <!-- <div class="text-center">
+              <button pButton pRipple type="button" label="Aggiungi" class="p-button-outlined p-button-success" style="width: 50%;" (click)="creaAppOwner();"></button>
+            </div> -->
+
+            <!-- <button pButton pRipple type="button" label="Aggiungi" class="p-button-outlined p-button-success" style="width: 50%; text-align: center;"></button> -->
+
 
           </form>
         </div>
       </div>
 
       <ng-template pTemplate="footer">
-        <p-button icon="pi pi-check" (click)="aggiuntaOwner=false" label="Ok" styleClass="p-button-text"></p-button>
+        <p-button icon="pi pi-check" (click)="aggiuntaOwner=false; creaAppOwner();" label="Crea AppOwner" styleClass="p-button-text"></p-button>
       </ng-template>
     </p-dialog>
   </div>
